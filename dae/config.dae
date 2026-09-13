@@ -1,0 +1,104 @@
+# vim:set commentstring='#%s'
+
+global {
+  # lan_interface: waydroid0, virbr0, vnet4
+  wan_interface: auto # 使用 "auto" 自动侦测 WAN 接口。
+
+  # log_level: warn
+  log_level: info
+  allow_insecure: false
+  auto_config_kernel_parameter: true
+  # disable_waiting_network: true
+
+  tls_implementation: utls
+}
+
+# 更多的 DNS 样例见 https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/dns.md
+dns {
+  upstream {
+    googledns: 'tcp+udp://dns.google:53'
+    cloudflare: 'tcp://1.1.1.1'
+    alidns: 'udp://dns.alidns.com:53'
+    # local: 'udp://127.0.0.53'
+    quad9: 'tcp://9.9.9.10:53'
+    cloudflare_doh: 'https://cloudflare-dns.com/dns-query'
+    quad9_doh: 'https://dns.quad9.net/dns-query'
+  }
+  # routing {
+  #   request {
+  #     qtype(https) -> reject
+  #     fallback: alidns
+  #   }
+  #   response {
+  #     upstream(googledns) -> accept
+  #     # hijacked result
+  #     ip(geoip:private) && !qname(geosite:cn) -> googledns
+  #
+  #     fallback: accept
+  #   }
+  # }
+  routing {
+    request {
+      qname(geosite:cn) -> alidns
+      fallback: cloudflare_doh
+    }
+  }
+}
+
+group {
+  proxy {
+    #filter: name(keyword: HK, keyword: SG)
+    # policy: min_moving_avg
+    policy: fixed(0)
+  }
+}
+
+# 更多的 Routing 样例见 https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/routing.md
+routing {
+  pname(NetworkManager) -> direct(must)
+  pname(localsend) -> direct(must)
+  pname(naiveproxy) -> direct(must)
+  pname(dhcpcd) -> direct(must)
+  pname(iwd) -> direct(must)
+  pname(ssh) -> direct(must)
+  dip(224.0.0.0/3, 'ff00::/8') -> direct
+  # proxy server
+  # dip(146.66.220.147) -> direct(must)
+
+  ### 以下为自定义规则
+
+  # 禁用 h3，因为它通常消耗很多 CPU 和内存资源
+  l4proto(udp) && dport(443) -> block
+  dip(geoip:private) -> direct
+
+  domain(deno.com) -> direct
+  domain(namu.wiki) -> direct
+  domain(libvirt.org) -> direct
+  domain(tetr.io) -> direct
+  # domain(archlinuxcn.org) -> direct
+  domain(gentoo.org) -> direct
+  # domain(archlinux.org) -> direct
+  domain(nixos.wiki) -> direct
+  domain(ollama.org) -> direct
+  domain(chimera-linux.org) -> direct
+  domain(fedoraproject.org) -> direct
+  domain(biturl.top) -> direct
+  domain(jetbrains.com) -> direct
+  domain(apple.com) -> direct
+  domain(saghen.dev) -> direct
+  domain(noctalia.dev) -> direct
+
+  # china
+  domain(deemos.dev) -> direct
+
+  domain(deepseek.com) -> proxy
+  # domain(github.com) -> proxy
+  # domain(githubassets.com) -> proxy
+
+  dip(geoip:cn) -> direct
+  domain(geosite:cn) -> direct
+
+  # domain(login.microsoftonline.com) -> proxy
+
+  fallback: proxy
+}
