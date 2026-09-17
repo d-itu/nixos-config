@@ -86,7 +86,7 @@ routing {
   domain(jetbrains.com) -> direct
   domain(apple.com) -> direct
   domain(saghen.dev) -> direct
-  domain(noctalia.dev) -> direct
+  domain(noctalia.dev) && pname(noctalia) -> direct
 
   # china
   domain(deemos.dev) -> direct

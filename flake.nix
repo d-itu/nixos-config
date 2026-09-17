@@ -3,13 +3,11 @@
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
-    "nixpkgs-26.05" = {
-      url = "github:NixOs/nixpkgs/nixos-26.05";
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    daeuniverse.url = "github:daeuniverse/flake.nix";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -34,6 +32,7 @@
       home-manager,
       apple-fonts,
       sops-nix,
+      daeuniverse,
       ...
     }@inputs:
     let
@@ -55,6 +54,7 @@
           ./configuration.nix
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
+          daeuniverse.nixosModules.dae
           {
             nixpkgs.overlays = [
               apple-fonts.overlays.default

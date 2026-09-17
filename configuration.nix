@@ -6,11 +6,6 @@
   inputs,
   ...
 }:
-let
-  nixpkgs-26-05 = import inputs."nixpkgs-26.05" {
-    system = pkgs.stdenv.hostPlatform.system;
-  };
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -59,7 +54,7 @@ in
   services = {
     dae = {
       enable = true;
-      package = nixpkgs-26-05.dae; # 1.0.0
+      package = inputs.daeuniverse.packages.x86_64-linux.dae-unstable;
       configFile = config.sops.templates."config.dae".path;
     };
     pipewire = {
