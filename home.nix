@@ -14,6 +14,7 @@ in
     inputs.zen-browser.homeModules.twilight
     inputs.spicetify-nix.homeManagerModules.spicetify
     ./user/noctalia
+    ./user/code-agent
   ];
   home = {
     inherit (constants) username;
