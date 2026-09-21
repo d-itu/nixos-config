@@ -25,6 +25,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     {
@@ -33,18 +37,21 @@
       apple-fonts,
       sops-nix,
       daeuniverse,
+      noctalia-greeter,
       ...
     }@inputs:
     let
+      username = "kamiduki";
+      constants = {
+        inherit username;
+        email = "kamiduki_0@outlook.com";
+
+        ui_font = "SF Pro";
+        font_size = 11;
+      };
       specialArgs = {
         inherit inputs;
-        constants = {
-          username = "kamiduki";
-          email = "kamiduki_0@outlook.com";
-
-          ui_font = "SF Pro";
-          font_size = 11;
-        };
+        inherit constants;
       };
     in
     {
@@ -55,6 +62,7 @@
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           daeuniverse.nixosModules.dae
+          noctalia-greeter.nixosModules.default
           {
             nixpkgs.overlays = [
               apple-fonts.overlays.default
@@ -63,7 +71,7 @@
               extraSpecialArgs = specialArgs;
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.kamiduki = import ./home.nix;
+              users."${constants.username}" = import ./home.nix;
             };
           }
         ];

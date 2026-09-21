@@ -52,6 +52,33 @@
   };
 
   services = {
+    displayManager = {
+      enable = true;
+      sessionPackages = with pkgs; [ niri ];
+
+      noctalia-greeter =
+        let
+          cursor = pkgs.callPackage ./utils/default-cursor.nix { };
+        in
+        {
+          enable = true;
+          cursorTheme = {
+            inherit (cursor) package;
+          };
+          passwordless-sync-users = [ constants.username ];
+          settings = {
+            appearance = {
+              hide_logo = true;
+            };
+            cursor = {
+              theme = cursor.name;
+              inherit (cursor) size;
+            };
+            auth.allow_empty_password = true;
+          };
+        };
+    };
+
     dae = {
       enable = true;
       package = inputs.daeuniverse.packages.x86_64-linux.dae-unstable;
