@@ -342,27 +342,6 @@ in
           "devtools.debugger.remote-enabled" = true;
         };
 
-        userChrome = ''
-          @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userChrome.css";
-
-          @media (prefers-color-scheme: dark) {
-            * {
-              --base: transparent;
-            }
-          }
-
-          #zen-workspaces-button {
-            background-color: transparent !important;
-          }
-
-          #TabsToolbar, hbox#titlebar {
-            background-color: transparent !important;
-          }
-        '';
-        userContent = ''
-          @import "${config.home.homeDirectory}/.cache/noctalia/zen-browser/zen-userContent.css";
-        '';
-
         extensions = {
           packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
             ublock-origin
