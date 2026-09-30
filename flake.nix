@@ -29,6 +29,10 @@
       url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    millennium = {
+      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     {
@@ -38,6 +42,7 @@
       sops-nix,
       daeuniverse,
       noctalia-greeter,
+      millennium,
       ...
     }@inputs:
     let
@@ -66,6 +71,7 @@
           {
             nixpkgs.overlays = [
               apple-fonts.overlays.default
+              millennium.overlays.default
             ];
             home-manager = {
               extraSpecialArgs = specialArgs;

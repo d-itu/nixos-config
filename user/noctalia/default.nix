@@ -64,6 +64,7 @@ in
           community_ids = [
             "fcitx5"
             "zathura"
+            "steam"
             # "pi-agent"
           ];
         };

@@ -15,6 +15,7 @@ in
     inputs.spicetify-nix.homeManagerModules.spicetify
     ./user/noctalia
     ./user/code-agent
+    ./user/millennium
   ];
   home = {
     inherit (constants) username;
