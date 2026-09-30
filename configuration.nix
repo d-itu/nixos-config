@@ -62,9 +62,6 @@
         in
         {
           enable = true;
-          cursorTheme = {
-            inherit (cursor) package;
-          };
           passwordless-sync-users = [ constants.username ];
           settings = {
             appearance = {
@@ -72,6 +69,7 @@
             };
             cursor = {
               theme = cursor.name;
+              path = "${cursor.package}/share/icons";
               inherit (cursor) size;
             };
             auth.allow_empty_password = true;
