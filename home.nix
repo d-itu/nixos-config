@@ -16,6 +16,7 @@ in
     ./user/noctalia
     ./user/code-agent
     ./user/millennium
+    ./user/yazi
   ];
   home = {
     inherit (constants) username;
@@ -396,35 +397,6 @@ in
     ripgrep.enable = true;
     fd.enable = true;
     fastfetch.enable = true;
-
-    yazi = {
-      enable = true;
-      extraPackages = [ ];
-      theme =
-        let
-          empty = {
-            open = "";
-            close = "";
-          };
-          square = {
-            open = "█";
-            close = "█";
-          };
-        in
-        {
-          indicator = {
-            padding = square;
-          };
-          tabs = {
-            sep_inner = empty;
-            sep_outer = empty;
-          };
-          status = {
-            sep_left = empty;
-            sep_right = empty;
-          };
-        };
-    };
 
     fzf = {
       enable = true;
