@@ -17,6 +17,7 @@ in
     ./user/code-agent
     ./user/millennium
     ./user/yazi
+    ./user/niri
   ];
   home = {
     inherit (constants) username;
@@ -140,10 +141,6 @@ in
       monospace = [ ];
       sansSerif = [ constants.ui_font ];
     };
-  };
-  wayland.windowManager.niri = {
-    enable = true;
-    extraConfig = builtins.readFile ./niri/config.kdl;
   };
   programs = {
     ssh = {

@@ -287,9 +287,31 @@
         "millennium": "millennium",
         "nixpkgs": "nixpkgs",
         "noctalia-greeter": "noctalia-greeter",
+        "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
+        "wl-send-key": "wl-send-key",
         "zen-browser": "zen-browser"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791707771,
+        "narHash": "sha256-w3m8HtAVCfGTHw+gcCTAy7jFHSdGbokm8NngbeFrkek=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "c1cfa7a2c809d364ac1a7e9b3ec418afa3f19793",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "sf-arabic": {
@@ -429,6 +451,29 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "wl-send-key": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791713412,
+        "narHash": "sha256-OLsyqKMPhe30YRuo95iO581SofGVfWsib+CU/Tk85Bs=",
+        "owner": "d-itu",
+        "repo": "wl-send-key",
+        "rev": "0247af3552d4737419325970246e207bb9ed4d00",
+        "type": "github"
+      },
+      "original": {
+        "owner": "d-itu",
+        "repo": "wl-send-key",
         "type": "github"
       }
     },

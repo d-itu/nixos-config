@@ -37,7 +37,6 @@ binds {
   Mod+V { toggle-window-floating; }
   F11 { fullscreen-window; }
 
-  Mod+Return repeat=false { spawn "kitty"; }
   Mod+P repeat=false { spawn "noctalia" "msg" "panel-toggle launcher"; }
   Mod+Menu repeat=false { spawn "noctalia" "msg" "panel-toggle clipboard"; }
 
