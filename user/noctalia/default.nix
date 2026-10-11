@@ -1,7 +1,8 @@
 {
   pkgs,
-  config,
   constants,
+  config,
+  osConfig,
   ...
 }:
 let
@@ -9,21 +10,63 @@ let
   wallpapers-dark = "${wallpapers}/dark";
   wallpapers-light = "${wallpapers}/light";
 
-  nixWallpaper = dir: name: {
-    name = "${dir}/${name}.png";
-    value =
+  nixWallpapers =
+    dir: names:
+    names
+    |> map (
+      name:
       let
         pkg = pkgs.nixos-artwork.wallpapers."${name}";
       in
       {
-        source = "${pkg}/share/backgrounds/nixos/nix-wallpaper-${name}.png";
-      };
-  };
+        name = "${dir}/${name}.png";
+        value.source = "${pkg}/share/backgrounds/nixos/nix-wallpaper-${name}.png";
+      }
+    )
+    |> builtins.listToAttrs;
   mkWallpapers =
     args:
     { }
-    // (args.nixos.dark |> map (nixWallpaper wallpapers-dark) |> builtins.listToAttrs)
-    // (args.nixos.light |> map (nixWallpaper wallpapers-light) |> builtins.listToAttrs);
+    // (args.nixos.dark |> nixWallpapers wallpapers-dark)
+    // (args.nixos.light |> nixWallpapers wallpapers-light);
+
+  plugins = {
+    clock = {
+      id = "local/clock";
+      name = "Paper Clock";
+      version = "0.1.0";
+      plugin_api = 32;
+      icon = "clock";
+      widget = [
+        {
+          id = "clock";
+          entry = ./plugins/clock.luau;
+        }
+      ];
+    };
+    snowflake = {
+      id = "local/snowflake";
+      name = "Snowflake";
+      version = "0.1.0";
+      plugin_api = 32;
+      icon = "snowflake";
+      widget = [
+        {
+          id = "snowflake";
+          entry = pkgs.writeText "widget.luau" ''
+            function update()
+              barWidget.setImage("${snowflake_out}", true, 20)
+            end
+          '';
+        }
+      ];
+    };
+  };
+
+  uid = toString osConfig.users.users.${config.home.username}.uid;
+  runtimeDir = "/run/user/${uid}";
+  snowflake_out = "${runtimeDir}/snowflake.svg";
+  tomlFormat = pkgs.formats.toml { };
 in
 {
   home.file =
@@ -39,15 +82,16 @@ in
         "nineish"
       ];
     }
-    // {
-      "${config.home.homeDirectory}/.local/share/noctalia/plugins/clock".source = ./plugins/clock;
-    };
+    // pkgs.lib.mapAttrs' (name: manifest: {
+      name = "${config.home.homeDirectory}/.local/share/noctalia/plugins/${name}/plugin.toml";
+      value.source = tomlFormat.generate "plugin.toml" manifest;
+    }) plugins;
   programs.noctalia = {
     enable = true;
     settings = {
       config_version = 13;
 
-      plugins.enabled = [ "local/clock" ];
+      plugins.enabled = plugins |> pkgs.lib.mapAttrsToList (name: _: "local/${name}");
 
       theme = {
         mode = "auto";
@@ -58,15 +102,16 @@ in
             "gtk3"
             "gtk4"
             "qt"
-            # "kitty"
-            # "starship"
           ];
           community_ids = [
             "fcitx5"
             "zathura"
             "steam"
-            # "pi-agent"
           ];
+          user.snowflake = {
+            input_path = ./templates/snowflake.svg;
+            output_path = snowflake_out;
+          };
         };
       };
 
@@ -116,13 +161,8 @@ in
       };
 
       widget = {
-        logo = {
-          type = "text";
-          text = "";
-          font_family = "VictorMono Nerd Font";
-          font_scale = 1.35;
-          color = "primary";
-
+        "local/snowflake" = {
+          type = "local/snowflake:snowflake";
           actions = {
             left = "panel-toggle wallpaper";
             right = "panel-toggle clipboard";
@@ -162,7 +202,7 @@ in
 
       bar.default = {
         start = [
-          "logo"
+          "local/snowflake"
           "workspaces"
           "active_window"
         ];

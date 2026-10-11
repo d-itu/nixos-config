@@ -1,9 +1,0 @@
-id = "local/clock"
-name = "Paper Clock"
-version = "0.1.0"
-plugin_api = 32
-icon = "clock"
-
-[[widget]]
-id = "clock"
-entry = "widget.luau"

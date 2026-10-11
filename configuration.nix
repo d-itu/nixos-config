@@ -33,6 +33,7 @@
       "wheel"
       "video"
     ];
+    uid = 1000;
   };
 
   environment = {
