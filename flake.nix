@@ -63,6 +63,7 @@
       daeuniverse,
       noctalia-greeter,
       millennium,
+      rust-overlay,
       ...
     }@inputs:
     let
@@ -92,6 +93,7 @@
             nixpkgs.overlays = [
               apple-fonts.overlays.default
               millennium.overlays.default
+              rust-overlay.overlays.default
             ];
             home-manager = {
               extraSpecialArgs = specialArgs;

@@ -8,6 +8,15 @@
 }:
 let
   snowflake = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+  rust = pkgs.rust-bin.selectLatestNightlyWith (
+    toolchain:
+    toolchain.default.override {
+      extensions = [
+        "rust-src"
+        "rust-analyzer"
+      ];
+    }
+  );
 in
 {
   imports = [
@@ -36,7 +45,7 @@ in
       meson
       cmake
       pkg-config
-      rustup # only for fish completion
+      rust
 
       # gui
       nautilus
@@ -289,7 +298,6 @@ in
         typescript-language-server
         vscode-json-languageserver
         yaml-language-server
-        rust-analyzer
       ];
     };
     neovide = {
