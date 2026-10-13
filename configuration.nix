@@ -3,12 +3,12 @@
   lib,
   config,
   constants,
-  inputs,
   ...
 }:
 {
   imports = [
     ./hardware-configuration.nix
+    ./system/network
   ];
 
   boot = {
@@ -78,11 +78,6 @@
         };
     };
 
-    dae = {
-      enable = true;
-      package = inputs.daeuniverse.packages.x86_64-linux.dae-unstable;
-      configFile = config.sops.templates."config.dae".path;
-    };
     pipewire = {
       enable = true;
       pulse.enable = true;
@@ -183,18 +178,11 @@
   sops = {
     age.keyFile = "/etc/sops/age/keys.txt";
     defaultSopsFile = ./secrets/secrets.yaml;
-    templates =
-      let
-        url = config.sops.placeholder.proxy_node;
-        node = "${url.scheme}://${url.user}:${url.password}@${url.host}";
-      in
-      {
-        "config.dae".content = builtins.readFile ./dae/config.dae + ''
-          node {
-            naive: '${node}'
-          }
-        '';
-      };
+    secrets = {
+      "proxy_node/user" = { };
+      "proxy_node/password" = { };
+      "proxy_node/host" = { };
+    };
   };
 
   system.stateVersion = "26.05";
