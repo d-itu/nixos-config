@@ -15,6 +15,43 @@ let
     provider = "opentech";
     model = "gpt-6-sol";
   };
+
+  fetchBunDeps =
+    {
+      src,
+      hash,
+      workspace,
+    }:
+
+    pkgs.stdenvNoCC.mkDerivation {
+      name = "bun-deps";
+      inherit src;
+
+      nativeBuildInputs = [ pkgs.bun ];
+
+      outputHash = hash;
+      outputHashAlgo = "sha256";
+      outputHashMode = "recursive";
+
+      dontConfigure = true;
+      dontFixup = true;
+
+      buildPhase = ''
+        export BUN_INSTALL_CACHE_DIR=$TMPDIR/bun-cache
+        bun install --frozen-lockfile --ignore-scripts --linker=hoisted --filter="${workspace}"
+        rm "node_modules/${workspace}"
+      '';
+      installPhase = ''
+        mv node_modules "$out"
+      '';
+    };
+
+  nowaboua-pi-stuff = pkgs.fetchFromGitHub {
+    owner = "IgorWarzocha";
+    repo = "howaboua-pi-stuff";
+    rev = "2e73770f9f74a22831e4813ad79ba0cbb7b92f6f";
+    hash = "sha256-0XDSUFphUYF1Y+2KirtsZLQTtdNWco82Zb9RTtQjG7M=";
+  };
 in
 {
   home.file.".pi/agent/extensions/pi-web-access".source =
@@ -34,6 +71,36 @@ in
       npmDepsHash = "sha256-AuyRQCMcdPzkttqel4xUr0/lW+YkDGLufas45WMLZcg=";
     }
     + "/lib/node_modules/pi-web-access";
+  home.file.".pi/agent/extensions/pi-codex-conversion".source =
+    let
+      src = nowaboua-pi-stuff;
+      package = builtins.readFile "${src}/packages/pi-codex-conversion/package.json" |> builtins.fromJSON;
+      deps = fetchBunDeps {
+        inherit src;
+        workspace = package.name;
+        hash = "sha256-h90p+vf5MQwnfhMkH3xrCe0A1BXkB022Ld078diQ5CU=";
+      };
+    in
+    pkgs.stdenvNoCC.mkDerivation {
+      pname = package.name;
+      version = package.version;
+      inherit src;
+      nativeBuildInputs = with pkgs; [
+        bun
+        nodejs
+        typescript
+      ];
+      buildPhase = ''
+        cd packages/pi-codex-conversion
+        cp -r "${deps}" node_modules
+        substituteInPlace tsconfig.build.json --replace-fail '"declaration": true' '"declaration": false'
+        ${package.scripts.build}
+      '';
+      installPhase = ''
+        cp -rL . $out
+      '';
+      dontFixup = true;
+    };
   programs = {
     pi-coding-agent = {
       enable = true;
