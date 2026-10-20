@@ -13,8 +13,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "d-itu";
           repo = "sometimes";
-          rev = "0d1d74b0bac70ebac05906ae50fa1d3ef91b18d8";
-          hash = "sha256-jC0JUCLf7kZIpgvDVxIg/shkX36ZLkEN5tggVzVyY60=";
+          rev = "39de862e9e3820d531da18523d6eec36c11aec89";
+          hash = "sha256-F2cR8R/x9/oZdLONTbvytgydIPhsSubLyyxlAGwIgus=";
         };
       in
 

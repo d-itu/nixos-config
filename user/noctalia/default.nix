@@ -120,6 +120,7 @@ in
       shell = {
         font_family = constants.ui_font;
         niri_overview_type_to_launch_enabled = true;
+        show_close_buttons = false;
         password_style = "random";
         launcher = {
           categories = false;
@@ -185,8 +186,7 @@ in
         notifications.hide_when_no_unread = true;
         battery = {
           display_mode = "graphic";
-          scale = 0.85;
-          show_label = false;
+          scale = 0.9;
         };
         privacy.hide_inactive = true;
         brightness.show_label = false;
