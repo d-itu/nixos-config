@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   wayland.windowManager.niri =
     let
       spawn-terminal-cmd = "spawn-terminal";
@@ -9,7 +9,7 @@
           slurp
           xdg-terminal-exec
           niri
-          inputs.wl-send-key.packages.${pkgs.stdenv.hostPlatform.system}.default
+          wl-send-key
         ];
         text = builtins.readFile ./spawn-terminal.sh;
       };

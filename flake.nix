@@ -56,34 +56,98 @@
   };
   outputs =
     {
+      self,
       nixpkgs,
       home-manager,
-      apple-fonts,
       sops-nix,
       daeuniverse,
       noctalia-greeter,
+      apple-fonts,
       millennium,
       rust-overlay,
+      firefox-addons,
+      spicetify-nix,
+      wl-send-key,
+      zen-browser,
       ...
-    }@inputs:
-    let
-      username = "kamiduki";
-      constants = {
-        inherit username;
-        email = "kamiduki_0@outlook.com";
-
-        ui_font = "SF Pro";
-        font_size = 11;
-      };
-      specialArgs = {
-        inherit inputs;
-        inherit constants;
-      };
-    in
+    }:
     {
+      packages.x86_64-linux =
+        let
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+          };
+        in
+        {
+          qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
+          sometimes = pkgs.callPackage ./pkgs/sometimes.nix { };
+        };
+      overlays.default =
+        prev: final:
+        let
+          localPackages = self.packages.${prev.stdenv.hostPlatform.system};
+          rustToolchain = prev.rust-bin.selectLatestNightlyWith (
+            toolchain:
+            toolchain.default.override {
+              extensions = [
+                "rust-src"
+                "rust-analyzer"
+              ];
+            }
+          );
+          rustPlatform = prev.makeRustPlatform {
+            cargo = rustToolchain;
+            rustc = rustToolchain;
+          };
+          rustAttrs =
+            attrs:
+            let
+              appDeps = rustPlatform.importCargoLock (
+                attrs.cargoLock or { lockFile = "${attrs.src}/Cargo.lock"; }
+              );
+              stdDeps = rustPlatform.importCargoLock {
+                lockFile = "${rustToolchain}/lib/rustlib/src/rust/library/Cargo.lock";
+              };
+            in
+            {
+              doCheck = false;
+              cargoDeps = prev.runCommand "cargo-vendor-dir" { } ''
+                mkdir -p "$out"
+                cp -rs ${appDeps}/. "$out"
+                for crate in ${stdDeps}/*/; do
+                  ln -sfn "$crate" "$out/$(basename "$crate")"
+                done
+              '';
+              CARGO_PROFILE_RELEASE_LTO = "fat";
+              CARGO_PROFILE_RELEASE_CODEGEN_UNITS = 1;
+              CARGO_PROFILE_RELEASE_PANIC = "abort";
+              RUSTFLAGS = [
+                "-Zshare-generics=y"
+                "-Zunstable-options"
+                "-Cpanic=immediate-abort"
+              ];
+              cargoBuildFlags = [
+                "-Zbuild-std=core,std,alloc,panic_abort"
+                "-Zbuild-std-features="
+              ];
+            };
+          rustPkg = pkg: (pkg.override { inherit rustPlatform; }).overrideAttrs rustAttrs;
+        in
+        {
+          spicetify = spicetify-nix.legacyPackages.${prev.stdenv.hostPlatform.system};
+          wl-send-key = wl-send-key.packages.${prev.stdenv.hostPlatform.system}.default;
+          inherit rustToolchain;
+          sometimes = rustPkg localPackages.sometimes;
+          lua-format = rustPkg final.lua-format;
+          blink-cmp-fuzzy = rustPkg final.blink-cmp-fuzzy;
+          inherit (localPackages) qogir-cursors millennium-material-theme;
+          piPlugins = {
+            inherit (localPackages) pi-web-access;
+          };
+        };
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit specialArgs;
         modules = [
+          ./default-options.nix
           ./configuration.nix
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
@@ -94,12 +158,20 @@
               apple-fonts.overlays.default
               millennium.overlays.default
               rust-overlay.overlays.default
+              firefox-addons.overlays.default
+              daeuniverse.overlays.default
+              self.overlays.default
             ];
             home-manager = {
-              extraSpecialArgs = specialArgs;
               useGlobalPkgs = true;
               useUserPackages = true;
-              users."${constants.username}" = import ./home.nix;
+              users.kamiduki = {
+                imports = [
+                  ./home/kamiduki
+                  zen-browser.homeModules.twilight
+                  spicetify-nix.homeManagerModules.spicetify
+                ];
+              };
             };
           }
         ];

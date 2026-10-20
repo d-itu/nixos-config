@@ -1,35 +1,20 @@
 {
-  inputs,
   pkgs,
   lib,
-  constants,
   config,
+  osConfig,
   ...
 }:
-let
-  snowflake = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-  rust = pkgs.rust-bin.selectLatestNightlyWith (
-    toolchain:
-    toolchain.default.override {
-      extensions = [
-        "rust-src"
-        "rust-analyzer"
-      ];
-    }
-  );
-in
 {
   imports = [
-    inputs.zen-browser.homeModules.twilight
-    inputs.spicetify-nix.homeManagerModules.spicetify
-    ./user/noctalia
-    ./user/code-agent
-    ./user/millennium
-    ./user/yazi
-    ./user/niri
+    ./noctalia
+    ./code-agent
+    ./millennium
+    ./yazi
+    ./niri
   ];
   home = {
-    inherit (constants) username;
+    username = "kamiduki";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
       sops
@@ -45,19 +30,19 @@ in
       meson
       cmake
       pkg-config
-      rust
+      rustToolchain
+      zig
+      uv
+      ruff
 
       # gui
       nautilus
       resources
       localsend
-
-      # fonts
-      sf-pro
-      corefonts
     ];
     sessionVariables = {
       NVIM_APPNAME = "papervim";
+      MANPAGER = "nvim +Man!";
       NIXOS_OZONE_WL = 1;
     };
     stateVersion = "26.05";
@@ -69,17 +54,13 @@ in
     la = "ls -lha";
     py = "python";
   };
-  home.pointerCursor =
-    let
-      cursor = pkgs.callPackage ./utils/default-cursor.nix { };
-    in
-    {
-      enable = true;
-      inherit (cursor) name package size;
+  home.pointerCursor = {
+    enable = true;
+    inherit (osConfig.cursor) name package size;
 
-      gtk.enable = true;
-      x11.enable = true;
-    };
+    gtk.enable = true;
+    x11.enable = true;
+  };
   gtk = {
     enable = true;
     theme = {
@@ -108,10 +89,7 @@ in
         };
         name = "Tela-${variant}";
       };
-    font = {
-      name = constants.ui_font;
-      size = constants.font_size;
-    };
+    font = osConfig.fonts.default.ui;
   };
   qt =
     let
@@ -123,7 +101,7 @@ in
         };
         Fonts = {
           fixed = "\"Monospace,11\"";
-          general = "\"${constants.ui_font},${toString constants.font_size}\"";
+          general = "\"${config.gtk.font.name},${toString config.gtk.font.size}\"";
         };
         Interface = {
           dialog_buttons_have_icons = 0;
@@ -148,7 +126,7 @@ in
     enable = true;
     defaultFonts = {
       monospace = [ ];
-      sansSerif = [ constants.ui_font ];
+      sansSerif = [ config.gtk.font.name ];
     };
   };
   programs = {
@@ -167,8 +145,8 @@ in
       enable = true;
       settings = {
         user = {
-          name = constants.username;
-          email = constants.email;
+          name = config.home.username;
+          email = "kamiduki_0@outlook.com";
         };
         init = {
           defaultBranch = "main";
@@ -263,10 +241,7 @@ in
     jujutsu = {
       enable = true;
       settings = {
-        user = {
-          name = constants.username;
-          inherit (constants) email;
-        };
+        user = config.programs.git.settings.user;
         ui = {
           default-command = [ "status" ];
         };
@@ -350,7 +325,7 @@ in
         };
 
         extensions = {
-          packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+          packages = with pkgs.firefox-addons; [
             ublock-origin
             github-file-icons
             darkreader
@@ -360,41 +335,62 @@ in
         };
 
         search.force = true;
-        search.engines = {
-          "GitHub" = {
-            urls = [ { template = "https://github.com/search?q={searchTerms}&type=repositories"; } ];
-            icon = "https://github.githubassets.com/favicons/favicon.svg";
-            definedAliases = [ "github" ];
+        search.engines =
+          let
+            snowflake = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          in
+          {
+            "GitHub" = {
+              urls = [ { template = "https://github.com/search?q={searchTerms}&type=repositories"; } ];
+              icon = "https://github.githubassets.com/favicons/favicon.svg";
+              definedAliases = [ "github" ];
+            };
+            "Nix Packages" = {
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages?type=packages&channel=unstable&query={searchTerms}";
+                }
+              ];
+              icon = snowflake;
+              definedAliases = [ "nixpkgs" ];
+            };
+            "Nix Options" = {
+              urls = [
+                {
+                  template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
+                }
+              ];
+              icon = snowflake;
+              definedAliases = [ "nixoptions" ];
+            };
+            "Home Manager Options" = {
+              urls = [
+                {
+                  template = "https://home-manager-options.extranix.com?query={searchTerms}&release=master";
+                }
+              ];
+              icon = snowflake;
+              definedAliases = [ "homemanager" ];
+            };
           };
-          "Nix Packages" = {
-            urls = [
-              {
-                template = "https://search.nixos.org/packages?type=packages&channel=unstable&query={searchTerms}";
-              }
-            ];
-            icon = snowflake;
-            definedAliases = [ "nixpkgs" ];
-          };
-          "Nix Options" = {
-            urls = [
-              {
-                template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
-              }
-            ];
-            icon = snowflake;
-            definedAliases = [ "nixoptions" ];
-          };
-          "Home Manager Options" = {
-            urls = [
-              {
-                template = "https://home-manager-options.extranix.com?query={searchTerms}&release=master";
-              }
-            ];
-            icon = snowflake;
-            definedAliases = [ "homemanager" ];
-          };
-        };
       };
+    };
+
+    less = {
+      enable = true;
+      options = {
+        mouse = true;
+        emouse = "all";
+        use-color = true;
+        no-vbell = true;
+        SILENT = true;
+        RAW-CONTROL-CHARS = true;
+      };
+      config = ''
+        #command
+        h left-scroll
+        l right-scroll
+      '';
     };
 
     btop.enable = true;
@@ -412,18 +408,14 @@ in
       settings = { };
     };
 
-    spicetify =
-      let
-        spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-      in
-      {
-        enable = true;
-        enabledExtensions = with spicePkgs.extensions; [
-          adblockify
-          hidePodcasts
-        ];
-        wayland = true;
-      };
+    spicetify = {
+      enable = true;
+      enabledExtensions = with pkgs.spicetify.extensions; [
+        adblockify
+        hidePodcasts
+      ];
+      wayland = true;
+    };
   };
   i18n.inputMethod = {
     enable = true;

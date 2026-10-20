@@ -342,37 +342,6 @@ window-rule {
 }
 
 layer-rule {
-  match namespace="launcher|hyoka"
-  background-effect {
-    blur true
-    xray false
-    saturation 1.0
-  }
-  popups {
-    background-effect {
-      blur true
-      xray false
-      saturation 1.0
-    }
-  }
-}
-
-layer-rule {
-  match namespace="launcher"
-  geometry-corner-radius 19
-  shadow {
-    on
-  }
-}
-
-layer-rule {
-  match namespace="hyoka"
-  popups {
-    geometry-corner-radius 13
-  }
-}
-
-layer-rule {
   match namespace="^noctalia-backdrop"
   place-within-backdrop true
 }

@@ -101,12 +101,26 @@ in
       '';
       dontFixup = true;
     };
+  home.file.".pi/agent/pi-codex-conversion.json".text = builtins.toJSON {
+    prompt.heavySystemPromptOverwrite = true;
+    tools.customRustBinariesDir =
+      let
+        src = "${nowaboua-pi-stuff}/packages/pi-codex-conversion/src/tools";
+      in
+      pkgs.rustToolchain.buildRustPackage {
+        pname = "pi-codex-conversion-tools";
+        version = "0.0.0";
+        inherit src;
+
+        cargoLock.lockFile = "${src}/Cargo.lock";
+      }
+      + "/bin";
+    scope.additionalProviders = providers |> pkgs.lib.mapAttrsToList (name: _: name);
+  };
   programs = {
     pi-coding-agent = {
       enable = true;
-      extraPackages = with pkgs; [
-        nodejs
-      ];
+      extraPackages = with pkgs; [ wl-clipboard ];
       inherit context;
       models = {
         providers = builtins.mapAttrs (

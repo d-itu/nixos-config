@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   config,
   ...
 }:
@@ -8,32 +7,11 @@
   imports = [ ./sometimes ];
   services.sometimes = {
     enable = true;
-    package =
-      let
-        src = pkgs.fetchFromGitHub {
-          owner = "d-itu";
-          repo = "sometimes";
-          rev = "39de862e9e3820d531da18523d6eec36c11aec89";
-          hash = "sha256-F2cR8R/x9/oZdLONTbvytgydIPhsSubLyyxlAGwIgus=";
-        };
-      in
-
-      pkgs.rustPlatform.buildRustPackage {
-        pname = "sometimes";
-        version = "unstable";
-
-        inherit src;
-
-        doCheck = false;
-
-        cargoLock.lockFile = src + /Cargo.lock;
-      };
     configFile = config.sops.templates."sometimes.toml".path;
   };
 
   services.dae = {
     enable = false;
-    package = inputs.daeuniverse.packages.x86_64-linux.dae-unstable;
     configFile = config.sops.templates."config.dae".path;
   };
 

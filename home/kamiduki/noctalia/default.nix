@@ -1,6 +1,5 @@
 {
   pkgs,
-  constants,
   config,
   osConfig,
   ...
@@ -118,13 +117,16 @@ in
       notification.background_opacity = 0.32;
 
       shell = {
-        font_family = constants.ui_font;
+        font_family = config.gtk.font.name;
         niri_overview_type_to_launch_enabled = true;
         show_close_buttons = false;
         password_style = "random";
         launcher = {
           categories = false;
-          providers.calculator.global = false;
+          providers = {
+            session.global = true;
+            calculator.global = false;
+          };
         };
         panel = {
           borders = false;

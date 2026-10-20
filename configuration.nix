@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  constants,
   ...
 }:
 {
@@ -26,7 +25,9 @@
   };
   time.timeZone = "Asia/Shanghai";
 
-  users.users."${constants.username}" = {
+  defaultUser = "kamiduki";
+
+  users.users."${config.defaultUser}" = {
     isNormalUser = true;
     shell = pkgs.fish;
     extraGroups = [
@@ -57,25 +58,21 @@
       enable = true;
       sessionPackages = with pkgs; [ niri ];
 
-      noctalia-greeter =
-        let
-          cursor = pkgs.callPackage ./utils/default-cursor.nix { };
-        in
-        {
-          enable = true;
-          passwordless-sync-users = [ constants.username ];
-          settings = {
-            appearance = {
-              hide_logo = true;
-            };
-            cursor = {
-              theme = cursor.name;
-              path = "${cursor.package}/share/icons";
-              inherit (cursor) size;
-            };
-            auth.allow_empty_password = true;
+      noctalia-greeter = with config; {
+        enable = true;
+        passwordless-sync-users = [ defaultUser ];
+        settings = {
+          appearance = {
+            hide_logo = true;
           };
+          cursor = with cursor; {
+            theme = name;
+            path = "${package}/share/icons";
+            inherit size;
+          };
+          auth.allow_empty_password = true;
         };
+      };
     };
 
     pipewire = {
@@ -118,7 +115,6 @@
 
     fish = {
       enable = true;
-      extraCompletionPackages = config.users.users."${constants.username}".packages;
       interactiveShellInit = ''
         set -U fish_greeting
       '';
@@ -144,7 +140,20 @@
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-color-emoji
+
+      corefonts
+      sf-pro
     ];
+    default.ui = {
+      name = "SF Pro";
+      size = 11;
+    };
+  };
+
+  cursor = {
+    package = pkgs.qogir-cursors;
+    name = "Qogir-cursors";
+    size = 24;
   };
 
   nixpkgs.config = {
