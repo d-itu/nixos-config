@@ -38,7 +38,7 @@ let
 
       buildPhase = ''
         export BUN_INSTALL_CACHE_DIR=$TMPDIR/bun-cache
-        bun install --frozen-lockfile --ignore-scripts --linker=hoisted --filter="${workspace}"
+        bun install --frozen-lockfile --linker=hoisted --filter="${workspace}"
         rm "node_modules/${workspace}"
       '';
       installPhase = ''
@@ -49,8 +49,8 @@ let
   nowaboua-pi-stuff = pkgs.fetchFromGitHub {
     owner = "IgorWarzocha";
     repo = "howaboua-pi-stuff";
-    rev = "2e73770f9f74a22831e4813ad79ba0cbb7b92f6f";
-    hash = "sha256-0XDSUFphUYF1Y+2KirtsZLQTtdNWco82Zb9RTtQjG7M=";
+    rev = "f0a5d30fc07561efdf6b1094ba3e9f1742c41519";
+    hash = "sha256-wixOYr6ndMv8hfBrr+EeHLFhx5OkXGc/7NYOBjyHyLs=";
   };
 in
 {
@@ -93,8 +93,12 @@ in
       buildPhase = ''
         cd packages/pi-codex-conversion
         cp -r "${deps}" node_modules
+
         substituteInPlace tsconfig.build.json --replace-fail '"declaration": true' '"declaration": false'
-        ${package.scripts.build}
+
+        node -e "const fs=require('node:fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.rmSync('changelog.js', { force: true })"
+        tsc --noCheck -p tsconfig.build.json
+        node ../../scripts/build-extension-changelog.mjs .
       '';
       installPhase = ''
         cp -rL . $out
