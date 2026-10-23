@@ -53,6 +53,7 @@
         rust-overlay.follows = "rust-overlay";
       };
     };
+    papervim.url = "github:d-itu/papervim";
   };
   outputs =
     {
@@ -69,6 +70,7 @@
       spicetify-nix,
       wl-send-key,
       zen-browser,
+      papervim,
       ...
     }:
     {
@@ -160,6 +162,7 @@
               rust-overlay.overlays.default
               firefox-addons.overlays.default
               daeuniverse.overlays.default
+              papervim.overlays.default
               self.overlays.default
             ];
             home-manager = {

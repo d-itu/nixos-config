@@ -12,6 +12,7 @@
     ./millennium
     ./yazi
     ./niri
+    ./neovim
   ];
   home = {
     username = "kamiduki";
@@ -21,6 +22,8 @@
 
       brightnessctl
       python3
+      luajit
+      tree-sitter
       zip
       unzip
       tokei
@@ -41,7 +44,6 @@
       localsend
     ];
     sessionVariables = {
-      NVIM_APPNAME = "papervim";
       MANPAGER = "nvim +Man!";
       NIXOS_OZONE_WL = 1;
     };
@@ -261,22 +263,6 @@
         size = 15;
       };
       extraConfig = builtins.readFile ./kitty/kitty.conf;
-    };
-    neovim = {
-      enable = true;
-      extraPackages = with pkgs; [
-        clang-tools
-        fish-lsp
-        lua-language-server
-        nixd
-        tinymist
-        typescript-language-server
-        vscode-json-languageserver
-        yaml-language-server
-      ];
-    };
-    neovide = {
-      enable = true;
     };
     zathura = {
       enable = true;
