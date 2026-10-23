@@ -448,8 +448,7 @@
         };
         addons = {
           classicui.globalSection = {
-            Font = "Noto Sans CJK SC Medium 16";
-            UseDarkTheme = true;
+            Font = with config.gtk.font; "${name} ${toString (size * 1.4)}";
             Theme = "noctalia";
           };
           pinyin.globalSection = {

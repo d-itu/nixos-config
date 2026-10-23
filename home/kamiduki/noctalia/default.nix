@@ -103,13 +103,21 @@ in
             "qt"
           ];
           community_ids = [
-            "fcitx5"
             "zathura"
             "steam"
           ];
-          user.snowflake = {
-            input_path = ./templates/snowflake.svg;
-            output_path = snowflake_out;
+          user = {
+            snowflake = {
+              input_path = ./templates/snowflake.svg;
+              output_path = snowflake_out;
+            };
+            fcitx5 = {
+              input_path = ./templates/fcitx5/theme.conf;
+              output_path = "$XDG_DATA_HOME/fcitx5/themes/noctalia/theme.conf";
+              post_hook = pkgs.writeShellScript "apply.sh" ''
+                busctl --user call org.fcitx.Fcitx5 /controller org.fcitx.Fcitx.Controller1 ReloadAddonConfig s classicui >/dev/null 2>&1 || true
+              '';
+            };
           };
         };
       };
