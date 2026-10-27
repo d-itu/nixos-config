@@ -38,10 +38,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    noctalia-greeter = {
-      url = "github:noctalia-dev/noctalia-greeter";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     millennium = {
       url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -70,7 +66,6 @@
       home-manager,
       sops-nix,
       daeuniverse,
-      noctalia-greeter,
       apple-fonts,
       millennium,
       rust-overlay,
@@ -165,7 +160,6 @@
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           daeuniverse.nixosModules.dae
-          noctalia-greeter.nixosModules.default
           {
             nixpkgs.overlays = [
               apple-fonts.overlays.default

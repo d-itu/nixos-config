@@ -60,7 +60,7 @@
 
       noctalia-greeter = with config; {
         enable = true;
-        passwordless-sync-users = [ defaultUser ];
+        passwordlessSyncUsers = [ defaultUser ];
         settings = {
           appearance = {
             hide_logo = true;

@@ -454,26 +454,6 @@
         "type": "github"
       }
     },
-    "noctalia-greeter": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792894449,
-        "narHash": "sha256-23ynML6xH86MdfydW4bGPuReToZhqFspAO8Q220i/hM=",
-        "owner": "noctalia-dev",
-        "repo": "noctalia-greeter",
-        "rev": "dbace1c834a9e0f2e1b5d4ef186db8ec3b422a49",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "noctalia-greeter",
-        "type": "github"
-      }
-    },
     "nvim-autopairs": {
       "flake": false,
       "locked": {
@@ -611,7 +591,6 @@
         "millennium": "millennium",
         "millennium-material-theme": "millennium-material-theme",
         "nixpkgs": "nixpkgs",
-        "noctalia-greeter": "noctalia-greeter",
         "papervim": "papervim",
         "pi-web-access": "pi-web-access",
         "rust-overlay": "rust-overlay",
