@@ -54,6 +54,10 @@
       };
     };
     papervim.url = "github:d-itu/papervim";
+    pi-web-access = {
+      url = "github:nicobailon/pi-web-access?rev=d47dc040552505e3b135d0136a0b15eaf4bdba52";
+      flake = false;
+    };
   };
   outputs =
     {
@@ -71,6 +75,7 @@
       wl-send-key,
       zen-browser,
       papervim,
+      pi-web-access,
       ...
     }:
     {
@@ -81,6 +86,7 @@
           };
         in
         {
+          pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
           qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
           sometimes = pkgs.callPackage ./pkgs/sometimes.nix { };
         };
