@@ -342,6 +342,22 @@
         "type": "github"
       }
     },
+    "millennium-material-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792701464,
+        "narHash": "sha256-3IQAZNsKXMpBu1ecMdJzoU1EvIW19fS1yOR2MbNUlZw=",
+        "owner": "kuska1",
+        "repo": "Material-Theme",
+        "rev": "32b6c127aab294c6f7c79ba7d3a12c717cc67227",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kuska1",
+        "repo": "Material-Theme",
+        "type": "github"
+      }
+    },
     "millennium-src": {
       "flake": false,
       "locked": {
@@ -593,6 +609,7 @@
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
         "millennium": "millennium",
+        "millennium-material-theme": "millennium-material-theme",
         "nixpkgs": "nixpkgs",
         "noctalia-greeter": "noctalia-greeter",
         "papervim": "papervim",

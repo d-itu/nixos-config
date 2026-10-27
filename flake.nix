@@ -58,6 +58,10 @@
       url = "github:nicobailon/pi-web-access?rev=d47dc040552505e3b135d0136a0b15eaf4bdba52";
       flake = false;
     };
+    millennium-material-theme = {
+      url = "github:kuska1/Material-Theme";
+      flake = false;
+    };
   };
   outputs =
     {
@@ -76,6 +80,7 @@
       zen-browser,
       papervim,
       pi-web-access,
+      millennium-material-theme,
       ...
     }:
     {
