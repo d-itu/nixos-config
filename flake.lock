@@ -594,6 +594,7 @@
         "papervim": "papervim",
         "pi-web-access": "pi-web-access",
         "rust-overlay": "rust-overlay",
+        "sometimes": "sometimes",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "wl-send-key": "wl-send-key",
@@ -718,6 +719,22 @@
       "original": {
         "type": "file",
         "url": "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg"
+      }
+    },
+    "sometimes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793160358,
+        "narHash": "sha256-2vuSihiogeCoEeuo4MzM3U22RwIS2kGVlvibkZrhayA=",
+        "owner": "d-itu",
+        "repo": "sometimes",
+        "rev": "f299c06e01aeb73270f37268ffcf670831df6c45",
+        "type": "github"
+      },
+      "original": {
+        "owner": "d-itu",
+        "repo": "sometimes",
+        "type": "github"
       }
     },
     "sops-nix": {

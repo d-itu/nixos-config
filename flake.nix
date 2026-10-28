@@ -58,6 +58,10 @@
       url = "github:kuska1/Material-Theme";
       flake = false;
     };
+    sometimes = {
+      url = "github:d-itu/sometimes";
+      flake = false;
+    };
   };
   outputs =
     {
@@ -76,6 +80,7 @@
       papervim,
       pi-web-access,
       millennium-material-theme,
+      sometimes,
       ...
     }:
     {
@@ -88,7 +93,7 @@
         {
           pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
           qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
-          sometimes = pkgs.callPackage ./pkgs/sometimes.nix { };
+          sometimes = pkgs.callPackage ./pkgs/sometimes.nix { src = sometimes; };
         };
       overlays.default =
         prev: final:
