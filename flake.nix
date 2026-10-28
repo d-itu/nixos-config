@@ -91,6 +91,9 @@
           };
         in
         {
+          millennium-material-theme = pkgs.callPackage ./pkgs/millennium-material-theme.nix {
+            src = millennium-material-theme;
+          };
           pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
           qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
           sometimes = pkgs.callPackage ./pkgs/sometimes.nix { src = sometimes; };

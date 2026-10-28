@@ -101,9 +101,9 @@
           custom_palette = true;
           icon_theme = config.gtk.iconTheme.name;
         };
-        Fonts = {
-          fixed = "\"Monospace,11\"";
-          general = "\"${config.gtk.font.name},${toString config.gtk.font.size}\"";
+        Fonts = with osConfig.fonts.default; {
+          fixed = with mono; "\"${name},${toString size}\"";
+          general = with ui; "\"${name},${toString size}\"";
         };
         Interface = {
           dialog_buttons_have_icons = 0;
@@ -122,13 +122,6 @@
     };
     "org/gnome/desktop/privacy" = {
       remember-recent-files = false;
-    };
-  };
-  fonts.fontconfig = {
-    enable = true;
-    defaultFonts = {
-      monospace = [ ];
-      sansSerif = [ config.gtk.font.name ];
     };
   };
   programs = {
@@ -266,6 +259,16 @@
     };
     zathura = {
       enable = true;
+      options = {
+        font = with osConfig.fonts.default.mono; "${name} ${toString size}";
+        guioptions = "v";
+        recolor-keephue = true;
+        selection-clipboard = "clipboard";
+        window-title-basename = true;
+      };
+      extraConfig = ''
+        include noctaliarc
+      '';
     };
     zen-browser = {
       enable = true;

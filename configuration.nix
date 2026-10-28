@@ -134,19 +134,32 @@
     };
   };
 
-  fonts = {
-    packages = with pkgs; [
+  fonts = with pkgs; {
+    packages = [
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-color-emoji
 
       corefonts
-      sf-pro
     ];
-    default.ui = {
-      name = "SF Pro";
-      size = 11;
+    enableDefaultPackages = false;
+    default = {
+      ui = {
+        name = "SF Pro";
+        size = 11;
+        package = sf-pro;
+      };
+      mono = {
+        name = "SF Mono";
+        size = 11;
+        package = sf-mono;
+      };
+      serif = {
+        name = "New York";
+        size = 11;
+        package = ny;
+      };
     };
   };
 
