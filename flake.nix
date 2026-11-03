@@ -11,10 +11,6 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    daeuniverse = {
-      url = "github:daeuniverse/flake.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -69,7 +65,6 @@
       nixpkgs,
       home-manager,
       sops-nix,
-      daeuniverse,
       apple-fonts,
       millennium,
       rust-overlay,
@@ -167,14 +162,12 @@
           ./configuration.nix
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
-          daeuniverse.nixosModules.dae
           {
             nixpkgs.overlays = [
               apple-fonts.overlays.default
               millennium.overlays.default
               rust-overlay.overlays.default
               firefox-addons.overlays.default
-              daeuniverse.overlays.default
               papervim.overlays.default
               self.overlays.default
             ];

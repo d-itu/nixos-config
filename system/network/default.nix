@@ -1,17 +1,18 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }:
 {
   imports = [ ./sometimes ];
   services.sometimes = {
-    enable = true;
+    enable = false;
     configFile = config.sops.templates."sometimes.toml".path;
   };
 
   services.dae = {
-    enable = false;
+    enable = true;
     configFile = config.sops.templates."config.dae".path;
   };
 
@@ -21,12 +22,15 @@
       formatToml = pkgs.formats.toml { };
     in
     {
-      "config.dae".content = builtins.readFile ./dae/config.dae + ''
-        node {
-          naive: 'https://${ph."proxy_node/user"}:${ph."proxy_node/password"}@${ph."proxy_node/host"}'
-        }
-      '';
-      "sometimes.toml" = {
+      "config.dae".content = lib.mkIf config.services.dae.enable (
+        builtins.readFile ./dae/config.dae
+        + ''
+          node {
+            naive: 'https://${ph."proxy_node/user"}:${ph."proxy_node/password"}@${ph."proxy_node/host"}'
+          }
+        ''
+      );
+      "sometimes.toml" = lib.mkIf config.services.sometimes.enable {
         content =
           formatToml.generate "sometimes.toml" {
             outbound_mark = config.services.sometimes.outboundMark;
