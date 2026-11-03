@@ -141,6 +141,24 @@
         "type": "github"
       }
     },
+    "drift": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1793642500,
+        "narHash": "sha256-WoDtUYmhWA4CqzqL9aK3g/aR3CJ8prqVbqYPuQWCM0k=",
+        "owner": "socatlolmeow",
+        "repo": "drift",
+        "rev": "8da1876835e34f673afd7c96c99b928100195459",
+        "type": "github"
+      },
+      "original": {
+        "owner": "socatlolmeow",
+        "repo": "drift",
+        "type": "github"
+      }
+    },
     "dropbar.nvim": {
       "flake": false,
       "locked": {
@@ -370,16 +388,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1793341285,
-        "narHash": "sha256-Y1CiZ4SoBUjLQyQM/pY+rS2dXD3CHLPstF0lmOc73D4=",
+        "lastModified": 1793645915,
+        "narHash": "sha256-yRzh4uc8uxFv5+5TROEIH1rUL2FF1/cvfc+uq5JGGHY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1c89083e451e891152365b799595cf7790a43325",
+        "rev": "f9887a8a434bfba06e20dfc77bc8e0628266af84",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -397,6 +415,22 @@
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1793341285,
+        "narHash": "sha256-Y1CiZ4SoBUjLQyQM/pY+rS2dXD3CHLPstF0lmOc73D4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1c89083e451e891152365b799595cf7790a43325",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -531,11 +565,12 @@
     "root": {
       "inputs": {
         "apple-fonts": "apple-fonts",
+        "drift": "drift",
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
         "millennium": "millennium",
         "millennium-material-theme": "millennium-material-theme",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "papervim": "papervim",
         "pi-web-access": "pi-web-access",
         "rust-overlay": "rust-overlay",

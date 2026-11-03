@@ -58,6 +58,10 @@
       url = "github:d-itu/sometimes";
       flake = false;
     };
+    drift = {
+      url = "github:socatlolmeow/drift";
+      flake = false;
+    };
   };
   outputs =
     {
@@ -76,6 +80,7 @@
       pi-web-access,
       millennium-material-theme,
       sometimes,
+      drift,
       ...
     }:
     {
@@ -92,6 +97,7 @@
           pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
           qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
           sometimes = pkgs.callPackage ./pkgs/sometimes.nix { src = sometimes; };
+          drift = pkgs.callPackage ./pkgs/drift.nix { src = drift; };
         };
       overlays.default =
         prev: final:
@@ -151,6 +157,7 @@
           sometimes = rustPkg localPackages.sometimes;
           lua-format = rustPkg final.lua-format;
           blink-cmp-fuzzy = rustPkg final.blink-cmp-fuzzy;
+          drift-player = localPackages.drift;
           inherit (localPackages) qogir-cursors millennium-material-theme;
           piPlugins = {
             inherit (localPackages) pi-web-access;

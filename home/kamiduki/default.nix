@@ -37,6 +37,7 @@
       zig
       uv
       ruff
+      drift-player
 
       # gui
       nautilus
