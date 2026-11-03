@@ -15,7 +15,10 @@ let
     provider = "opentech";
     model = "gpt-6-sol";
   };
-  plugins = with pkgs.piPlugins; [ pi-web-access ];
+  plugins = with pkgs.piPlugins; [
+    pi-web-access
+    pi-apply-patch
+  ];
 in
 {
   home.file =

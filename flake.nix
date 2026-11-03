@@ -50,6 +50,10 @@
       url = "github:nicobailon/pi-web-access?rev=d47dc040552505e3b135d0136a0b15eaf4bdba52";
       flake = false;
     };
+    pi-apply-patch = {
+      url = "github:code-yeongyu/pi-apply-patch";
+      flake = false;
+    };
     millennium-material-theme = {
       url = "github:kuska1/Material-Theme";
       flake = false;
@@ -78,6 +82,7 @@
       zen-browser,
       papervim,
       pi-web-access,
+      pi-apply-patch,
       millennium-material-theme,
       sometimes,
       drift,
@@ -95,6 +100,7 @@
             src = millennium-material-theme;
           };
           pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
+          pi-apply-patch = pkgs.callPackage ./pkgs/pi-apply-patch.nix { src = pi-apply-patch; };
           qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
           sometimes = pkgs.callPackage ./pkgs/sometimes.nix { src = sometimes; };
           drift = pkgs.callPackage ./pkgs/drift.nix { src = drift; };
@@ -160,7 +166,7 @@
           drift-player = localPackages.drift;
           inherit (localPackages) qogir-cursors millennium-material-theme;
           piPlugins = {
-            inherit (localPackages) pi-web-access;
+            inherit (localPackages) pi-web-access pi-apply-patch;
           };
         };
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
