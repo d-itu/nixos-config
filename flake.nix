@@ -81,13 +81,11 @@
       wl-send-key,
       zen-browser,
       papervim,
-      pi-web-access,
-      pi-apply-patch,
-      millennium-material-theme,
-      sometimes,
-      drift,
       ...
-    }:
+    }@inputs:
+    let
+      lib = nixpkgs.lib;
+    in
     {
       packages.x86_64-linux =
         let
@@ -95,16 +93,19 @@
             system = "x86_64-linux";
           };
         in
-        {
-          millennium-material-theme = pkgs.callPackage ./pkgs/millennium-material-theme.nix {
-            src = millennium-material-theme;
-          };
-          pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
-          pi-apply-patch = pkgs.callPackage ./pkgs/pi-apply-patch.nix { src = pi-apply-patch; };
-          qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
-          sometimes = pkgs.callPackage ./pkgs/sometimes.nix { src = sometimes; };
-          drift = pkgs.callPackage ./pkgs/drift.nix { src = drift; };
-        };
+        builtins.readDir ./pkgs
+        |> lib.mapAttrs' (
+          pkg: _:
+          let
+            name = lib.removeSuffix ".nix" pkg;
+          in
+          {
+            inherit name;
+            value = pkgs.callPackage ./pkgs/${pkg} (
+              if inputs |> lib.hasAttr name then { src = inputs."${name}"; } else { }
+            );
+          }
+        );
       overlays.default =
         prev: final:
         let
@@ -205,7 +206,7 @@
         builtins.readDir ./hosts
         |> builtins.mapAttrs (
           host: _:
-          nixpkgs.lib.nixosSystem {
+          lib.nixosSystem {
             modules = [
               self.nixosModules.default
               ./hosts/${host}
