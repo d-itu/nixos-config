@@ -169,34 +169,48 @@
             inherit (localPackages) pi-web-access pi-apply-patch;
           };
         };
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./default-options.nix
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          sops-nix.nixosModules.sops
-          {
-            nixpkgs.overlays = [
-              apple-fonts.overlays.default
-              millennium.overlays.default
-              rust-overlay.overlays.default
-              firefox-addons.overlays.default
-              papervim.overlays.default
-              self.overlays.default
-            ];
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.kamiduki = {
-                imports = [
-                  ./home/kamiduki
-                  zen-browser.homeModules.twilight
-                  spicetify-nix.homeManagerModules.spicetify
-                ];
+      nixosModules = {
+        default = {
+          imports = [
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            self.nixosModules.system
+            ./modules
+            {
+              nixpkgs.overlays = [
+                apple-fonts.overlays.default
+                millennium.overlays.default
+                rust-overlay.overlays.default
+                firefox-addons.overlays.default
+                papervim.overlays.default
+                self.overlays.default
+              ];
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.kamiduki = {
+                  imports = [
+                    ./home/kamiduki
+                    zen-browser.homeModules.twilight
+                    spicetify-nix.homeManagerModules.spicetify
+                  ];
+                };
               };
-            };
-          }
-        ];
+            }
+          ];
+        };
+        system = import ./system;
       };
+      nixosConfigurations =
+        builtins.readDir ./hosts
+        |> builtins.mapAttrs (
+          host: _:
+          nixpkgs.lib.nixosSystem {
+            modules = [
+              self.nixosModules.default
+              ./hosts/${host}
+            ];
+          }
+        );
     };
 }

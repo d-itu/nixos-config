@@ -5,10 +5,7 @@
   ...
 }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./system/network
-  ];
+  imports = [ ./network ];
 
   boot = {
     loader = {
@@ -199,7 +196,7 @@
 
   sops = {
     age.keyFile = "/etc/sops/age/keys.txt";
-    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFile = ../secrets/secrets.yaml;
     secrets = {
       "proxy_node/user" = { };
       "proxy_node/password" = { };
