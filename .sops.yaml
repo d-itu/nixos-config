@@ -1,8 +1,12 @@
 keys:
-  - &laptop age1z0p7eekj8hf4qyvklzmc5ljmjjsz6tdmqndn6g44d44wsunlkqjq5ezy6v
+  - &admin age1z0p7eekj8hf4qyvklzmc5ljmjjsz6tdmqndn6g44d44wsunlkqjq5ezy6v
+  - &laptop age1v8xr7lkjmyn9zemstaq0r6hwd9nyj8sd3gpmk4yguscsvuy67pjq8lyuct
+  - &desktop age1v2sqt0q2s4anrxaqvrpr489dkw7xxrhn2g3zz8d42qrcjkku8swqyev07j
 
 creation_rules:
   - path_regex: secrets/.*\.yaml$
     key_groups:
       - age:
-        - *laptop
+          - *admin
+          - *laptop
+          - *desktop

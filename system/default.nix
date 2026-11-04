@@ -16,7 +16,6 @@
   };
 
   networking = {
-    hostName = "nixos";
     networkmanager.enable = true;
     firewall.enable = false;
   };
@@ -51,6 +50,7 @@
   };
 
   services = {
+    openssh.generateHostKeys = true;
     displayManager = {
       enable = true;
       sessionPackages = with pkgs; [ niri ];
@@ -76,16 +76,6 @@
       enable = true;
       pulse.enable = true;
     };
-    upower.enable = true;
-    power-profiles-daemon.enable = true;
-    printing = {
-      enable = true;
-      drivers = with pkgs; [
-        epson-escpr
-      ];
-      extraConf = "DefaultAuthType None";
-    };
-    avahi.enable = true;
 
     udisks2 = {
       enable = true;
@@ -93,7 +83,6 @@
     };
     gvfs.enable = true;
     devmon.enable = true;
-    fprintd.enable = true;
   };
 
   programs = {
@@ -193,16 +182,4 @@
     };
     rtkit.enable = true;
   };
-
-  sops = {
-    age.keyFile = "/etc/sops/age/keys.txt";
-    defaultSopsFile = ../secrets/secrets.yaml;
-    secrets = {
-      "proxy_node/user" = { };
-      "proxy_node/password" = { };
-      "proxy_node/host" = { };
-    };
-  };
-
-  system.stateVersion = "26.05";
 }
