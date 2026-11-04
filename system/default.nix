@@ -7,6 +7,22 @@
 {
   imports = [ ./network ];
 
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users =
+      builtins.readDir ../home
+      |> builtins.mapAttrs (
+        username: _: {
+          imports = [ ../home/${username} ];
+          home = {
+            inherit username;
+            homeDirectory = "/home/${username}";
+          };
+        }
+      );
+  };
+
   boot = {
     loader = {
       systemd-boot.enable = true;

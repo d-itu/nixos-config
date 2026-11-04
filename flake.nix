@@ -187,17 +187,10 @@
                 papervim.overlays.default
                 self.overlays.default
               ];
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.kamiduki = {
-                  imports = [
-                    ./home/kamiduki
-                    zen-browser.homeModules.twilight
-                    spicetify-nix.homeManagerModules.spicetify
-                  ];
-                };
-              };
+              home-manager.sharedModules = [
+                zen-browser.homeModules.twilight
+                spicetify-nix.homeManagerModules.spicetify
+              ];
             }
           ];
         };

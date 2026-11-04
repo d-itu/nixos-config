@@ -15,8 +15,6 @@
     ./neovim
   ];
   home = {
-    username = "kamiduki";
-    homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
       sops
 
