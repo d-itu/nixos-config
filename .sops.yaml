@@ -1,9 +1,22 @@
 keys:
   - &admin age1z0p7eekj8hf4qyvklzmc5ljmjjsz6tdmqndn6g44d44wsunlkqjq5ezy6v
+  - &kamiduki age12s3dqnck577lhxw7c97m8m48vst90cudhmhmagmvapfvuctzmufszh2euk
   - &laptop age1v8xr7lkjmyn9zemstaq0r6hwd9nyj8sd3gpmk4yguscsvuy67pjq8lyuct
   - &desktop age1v2sqt0q2s4anrxaqvrpr489dkw7xxrhn2g3zz8d42qrcjkku8swqyev07j
 
 creation_rules:
+  - path_regex: home/secrets/id_ed25519
+    key_groups:
+      - age:
+          - *admin
+          - *kamiduki
+          - *laptop
+          - *desktop
+  - path_regex: home/secrets/.*
+    key_groups:
+      - age:
+          - *admin
+          - *kamiduki
   - path_regex: secrets/.*
     key_groups:
       - age:

@@ -5,14 +5,14 @@
 }:
 let
   username = baseNameOf (lib.removeSuffix "/default.nix" ./.);
+  homeDirectory = "/home/${username}";
 in
 {
   home-manager.users."${username}" = {
     imports = [ ./home ];
 
     home = {
-      inherit username;
-      homeDirectory = "/home/${username}";
+      inherit username homeDirectory;
     };
   };
 
@@ -27,6 +27,17 @@ in
       (builtins.readFile ./home/id_ed25519.pub)
     ];
     uid = 1000;
+  };
+
+  sops = {
+    secrets = {
+      "${username}/id_ed25519" = {
+        sopsFile = ./home/secrets/id_ed25519;
+        path = "${homeDirectory}/.ssh/id_ed25519";
+        format = "binary";
+        owner = username;
+      };
+    };
   };
 
   services.displayManager.noctalia-greeter.passwordlessSyncUsers = [ username ];
