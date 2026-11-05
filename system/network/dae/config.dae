@@ -24,7 +24,7 @@ dns {
   }
   routing {
     request {
-      qname(geosite:cn) -> alidns
+      qname(geosite:cn) -> asis
       fallback: cloudflare
     }
   }
