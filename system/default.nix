@@ -161,6 +161,7 @@
       "flakes"
       "pipe-operators"
     ];
+    trusted-users = [ "@wheel" ];
     substituters = [ "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store" ];
   };
 
