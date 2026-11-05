@@ -176,7 +176,6 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             self.nixosModules.system
-            self.nixosModules.secrets
             ./modules
             {
               nixpkgs.overlays = [
@@ -196,7 +195,6 @@
           ];
         };
         system = import ./system;
-        secrets = import ./secrets;
       };
       nixosConfigurations =
         builtins.readDir ./hosts

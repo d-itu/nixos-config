@@ -7,6 +7,7 @@
 {
   imports = [
     ./network
+    ./secrets
     ./users
   ];
 
@@ -28,8 +29,6 @@
     firewall.enable = false;
   };
   time.timeZone = "Asia/Shanghai";
-
-  defaultUser = "kamiduki";
 
   environment = {
     systemPackages = with pkgs; [

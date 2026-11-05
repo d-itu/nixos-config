@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 {
   sops = {
     defaultSopsFile = ./secrets.yaml;
@@ -7,10 +7,6 @@
       "proxy_node/user" = { };
       "proxy_node/password" = { };
       "proxy_node/host" = { };
-      age = {
-        owner = config.defaultUser;
-        path = "/home/${config.defaultUser}/.config/sops/age/keys.txt";
-      };
     };
   };
 }

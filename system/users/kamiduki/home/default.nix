@@ -459,4 +459,20 @@
       waylandFrontend = true;
     };
   };
+
+  sops = {
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets = {
+      "sops/age/keys.txt" = {
+        sopsFile = ./secrets/age/sops/keys.txt;
+        path = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+        format = "binary";
+      };
+      id_ed25519 = {
+        sopsFile = ./secrets/id_ed25519;
+        path = "${config.home.homeDirectory}/.ssh/id_ed25519";
+        format = "binary";
+      };
+    };
+  };
 }

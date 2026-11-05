@@ -25,9 +25,6 @@
         mono = font;
         serif = font;
       };
-    defaultUser = lib.mkOption {
-      type = lib.types.str;
-    };
     cursor = {
       package = lib.mkOption {
         type = lib.types.package;
