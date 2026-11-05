@@ -7,8 +7,8 @@
 {
   imports = [
     ./network
-    ./secrets
     ./users
+    ./default-options.nix
   ];
 
   home-manager = {
@@ -177,5 +177,23 @@
       '';
     };
     rtkit.enable = true;
+  };
+
+  sops = {
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets = {
+      "proxy_node/user" = {
+        sopsFile = ./secrets/proxy_node.yaml;
+        key = "user";
+      };
+      "proxy_node/host" = {
+        sopsFile = ./secrets/proxy_node.yaml;
+        key = "host";
+      };
+      "proxy_node/password" = {
+        sopsFile = ./secrets/proxy_node.yaml;
+        key = "password";
+      };
+    };
   };
 }

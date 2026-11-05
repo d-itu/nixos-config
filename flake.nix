@@ -176,7 +176,6 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             self.nixosModules.system
-            ./modules
             {
               nixpkgs.overlays = [
                 apple-fonts.overlays.default
