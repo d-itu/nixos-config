@@ -190,6 +190,7 @@
               home-manager.sharedModules = [
                 zen-browser.homeModules.twilight
                 spicetify-nix.homeManagerModules.spicetify
+                sops-nix.homeManagerModules.sops
               ];
             }
           ];

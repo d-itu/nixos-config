@@ -5,22 +5,14 @@
   ...
 }:
 {
-  imports = [ ./network ];
+  imports = [
+    ./network
+    ./users
+  ];
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users =
-      builtins.readDir ../home
-      |> builtins.mapAttrs (
-        username: _: {
-          imports = [ ../home/${username} ];
-          home = {
-            inherit username;
-            homeDirectory = "/home/${username}";
-          };
-        }
-      );
   };
 
   boot = {
@@ -38,16 +30,6 @@
   time.timeZone = "Asia/Shanghai";
 
   defaultUser = "kamiduki";
-
-  users.users."${config.defaultUser}" = {
-    isNormalUser = true;
-    shell = pkgs.fish;
-    extraGroups = [
-      "wheel"
-      "video"
-    ];
-    uid = 1000;
-  };
 
   environment = {
     systemPackages = with pkgs; [
@@ -73,7 +55,6 @@
 
       noctalia-greeter = with config; {
         enable = true;
-        passwordlessSyncUsers = [ defaultUser ];
         settings = {
           appearance = {
             hide_logo = true;
