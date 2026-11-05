@@ -23,6 +23,9 @@ in
       "wheel"
       "video"
     ];
+    openssh.authorizedKeys.keys = [
+      (builtins.readFile ./home/id_ed25519.pub)
+    ];
     uid = 1000;
   };
 
