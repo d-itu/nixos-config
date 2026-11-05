@@ -466,6 +466,7 @@
   };
 
   sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
     age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
     secrets = {
       "sops/age/keys.txt" = {

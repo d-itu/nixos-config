@@ -66,6 +66,10 @@
       url = "github:socatlolmeow/drift";
       flake = false;
     };
+    noctalia-official-plugins = {
+      url = "github:noctalia-dev/official-plugins";
+      flake = false;
+    };
   };
   outputs =
     {
@@ -81,6 +85,7 @@
       wl-send-key,
       zen-browser,
       papervim,
+      noctalia-official-plugins,
       ...
     }@inputs:
     let
@@ -168,6 +173,12 @@
           inherit (localPackages) qogir-cursors millennium-material-theme;
           piPlugins = {
             inherit (localPackages) pi-web-access pi-apply-patch;
+          };
+          noctaliaPlugins = {
+            wallhaven = localPackages.mkNoctaliaPlugin {
+              pname = "wallhaven";
+              src = "${noctalia-official-plugins}/wallhaven";
+            };
           };
         };
       nixosModules = {

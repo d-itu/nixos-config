@@ -29,7 +29,7 @@ let
     // (args.nixos.dark |> nixWallpapers wallpapers-dark)
     // (args.nixos.light |> nixWallpapers wallpapers-light);
 
-  plugins = {
+  localPlugins = {
     clock = {
       id = "local/clock";
       name = "Paper Clock";
@@ -62,35 +62,71 @@ let
     };
   };
 
+  plugins = with pkgs.noctaliaPlugins; [ wallhaven ];
   uid = toString osConfig.users.users.${config.home.username}.uid;
   runtimeDir = "/run/user/${uid}";
   snowflake_out = "${runtimeDir}/snowflake.svg";
-  tomlFormat = pkgs.formats.toml { };
+  formatToml = pkgs.formats.toml { };
 in
 {
-  home.file =
-    mkWallpapers {
-      nixos.dark = [
-        "dracula"
-        "gear"
-        "simple-dark-gray"
-        "nineish-dark-gray"
-      ];
-      nixos.light = [
-        "simple-light-gray"
-        "nineish"
-      ];
-    }
-    // pkgs.lib.mapAttrs' (name: manifest: {
-      name = "${config.home.homeDirectory}/.local/share/noctalia/plugins/${name}/plugin.toml";
-      value.source = tomlFormat.generate "plugin.toml" manifest;
-    }) plugins;
+  home.file = mkWallpapers {
+    nixos.dark = [
+      "dracula"
+      "gear"
+      "simple-dark-gray"
+      "nineish-dark-gray"
+    ];
+    nixos.light = [
+      "simple-light-gray"
+      "nineish"
+    ];
+  };
+
+  xdg.dataFile =
+    pkgs.lib.mapAttrs' (name: manifest: {
+      name = "noctalia/plugins/${name}/plugin.toml";
+      value.source = formatToml.generate "plugin.toml" manifest;
+    }) localPlugins
+    // (
+      plugins
+      |> map (plugin: {
+        name = "noctalia/plugins/${plugin.pname}";
+        value.source = plugin + /share/noctalia/plugins/${plugin.pname};
+      })
+      |> builtins.listToAttrs
+    );
+
+  sops = {
+    secrets = {
+      wallhaven = { };
+    };
+    templates."noctalia/secrets.toml" = {
+      file = formatToml.generate "secrets.toml" {
+        plugin_settings = {
+          "noctalia/wallhaven" = {
+            api_key = config.sops.placeholder.wallhaven;
+          };
+        };
+      };
+      path = "${config.xdg.configHome}/noctalia/secrets.toml";
+    };
+  };
+
   programs.noctalia = {
     enable = true;
+    systemd.enable = true;
     settings = {
-      config_version = 13;
-
-      plugins.enabled = plugins |> pkgs.lib.mapAttrsToList (name: _: "local/${name}");
+      plugins.enabled =
+        map (
+          plugin:
+          (plugin + /share/noctalia/plugins/${plugin.pname}/plugin.toml |> builtins.readFile |> fromTOML).id
+        ) plugins
+        ++ pkgs.lib.mapAttrsToList (name: _: "local/${name}") localPlugins;
+      plugin_settings = {
+        "noctalia/wallhaven" = {
+          browser_placement = "floating";
+        };
+      };
 
       theme = {
         mode = "auto";
