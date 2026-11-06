@@ -291,6 +291,7 @@
           Cryptomining = true;
           Fingerprinting = true;
         };
+        ExtensionUpdate = false;
         Preferences =
           builtins.mapAttrs
             (_: value: {
@@ -301,6 +302,9 @@
               "browser.aboutConfig.showWarning" = false;
               "browser.tabs.hoverPreview.enabled" = true;
               "browser.translations.automaticallyPopup" = false;
+
+              "extensions.update.autoUpdateDefault" = false;
+              "extensions.systemAddon.update.enabled" = false;
 
               "dom.webgpu.enabled" = true;
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
@@ -322,6 +326,20 @@
       ];
 
       profiles.default = {
+        extensions = {
+          force = true;
+          settings = with pkgs.firefox-addons; {
+            "${simple-translate.addonId}".settings = {
+              Settings = {
+                targetLang = "zh-CN";
+              };
+            };
+            "${darkreader.addonId}".settings = {
+              fetchNews = false;
+              automation.enabled = true;
+            };
+          };
+        };
         search.force = true;
         search.engines =
           let
