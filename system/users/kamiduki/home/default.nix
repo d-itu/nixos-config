@@ -318,13 +318,21 @@
             };
       };
 
-      globalExtensions = with pkgs.firefox-addons; [
-        ublock-origin
-        github-file-icons
-        darkreader
-        simple-translate
-        vimium
-      ];
+      globalExtensions =
+        with pkgs.firefox-addons;
+        [
+          ublock-origin
+          github-file-icons
+          darkreader
+          simple-translate
+          vimium
+        ]
+        |> map (package: {
+          inherit package;
+          settings = {
+            private_browsing = true;
+          };
+        });
 
       profiles.default = {
         extensions = {
