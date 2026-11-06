@@ -31,79 +31,77 @@
         ''
       );
       "sometimes.toml" = lib.mkIf config.services.sometimes.enable {
-        content =
-          formatToml.generate "sometimes.toml" {
-            outbound_mark = config.services.sometimes.outboundMark;
+        file = formatToml.generate "sometimes.toml" {
+          outbound_mark = config.services.sometimes.outboundMark;
 
-            listeners = [
+          listeners = [
+            {
+              host = "127.0.0.1";
+              port = config.services.sometimes.tproxyPort;
+              protocol = "tproxy";
+            }
+            {
+              host = "::1";
+              port = config.services.sometimes.tproxyPort;
+              protocol = "tproxy";
+            }
+          ];
+          log.level = "info";
+          upstream = {
+            host = ph."proxy_node/host";
+            username = ph."proxy_node/user";
+            password = ph."proxy_node/password";
+          };
+          routing = {
+            default = "proxy";
+            rules = [
               {
-                host = "127.0.0.1";
-                port = config.services.sometimes.tproxyPort;
-                protocol = "tproxy";
+                domain_suffix = [
+                  "cn"
+                  "noctalia.dev"
+                ];
+                action = "direct";
               }
               {
-                host = "::1";
-                port = config.services.sometimes.tproxyPort;
-                protocol = "tproxy";
+                domain = [ "dns.alidns.com" ];
+                action = "direct";
               }
             ];
-            log.level = "info";
-            upstream = {
-              host = ph."proxy_node/host";
-              username = ph."proxy_node/user";
-              password = ph."proxy_node/password";
-            };
+          };
+          dns = {
+            enabled = true;
+            timeout_ms = 5000;
+            bootstrap = [
+              "119.29.29.29:53"
+              "223.5.5.5:53"
+            ];
+            listen = [
+              "127.0.0.1:1053"
+              "[::1]:1053"
+            ];
+            upstreams = [
+              {
+                name = "cloudflare";
+                protocol = "tcp";
+                host = "1.1.1.1";
+              }
+              {
+                name = "alidns";
+                protocol = "udp";
+                host = "dns.alidns.com";
+              }
+            ];
             routing = {
-              default = "proxy";
               rules = [
                 {
-                  domain_suffix = [
-                    "cn"
-                    "noctalia.dev"
-                  ];
-                  action = "direct";
-                }
-                {
-                  domain = [ "dns.alidns.com" ];
-                  action = "direct";
+                  domain_suffix = [ "cn" ];
+                  upstream = "alidns";
                 }
               ];
+              default = "cloudflare";
             };
-            dns = {
-              enabled = true;
-              timeout_ms = 5000;
-              bootstrap = [
-                "119.29.29.29:53"
-                "223.5.5.5:53"
-              ];
-              listen = [
-                "127.0.0.1:1053"
-                "[::1]:1053"
-              ];
-              upstreams = [
-                {
-                  name = "cloudflare";
-                  protocol = "tcp";
-                  host = "1.1.1.1";
-                }
-                {
-                  name = "alidns";
-                  protocol = "udp";
-                  host = "dns.alidns.com";
-                }
-              ];
-              routing = {
-                rules = [
-                  {
-                    domain_suffix = [ "cn" ];
-                    upstream = "alidns";
-                  }
-                ];
-                default = "cloudflare";
-              };
-            };
-          }
-          |> builtins.readFile;
+          };
+        };
         owner = "sometimes";
         group = "sometimes";
       };
