@@ -323,6 +323,7 @@
         github-file-icons
         darkreader
         simple-translate
+        vimium
       ];
 
       profiles.default = {
