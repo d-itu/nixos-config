@@ -18,6 +18,7 @@ let
   plugins = with pkgs.piPlugins; [
     pi-web-access
     pi-apply-patch
+    remote_pi
   ];
 in
 {

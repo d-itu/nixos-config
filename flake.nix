@@ -54,6 +54,10 @@
       url = "github:code-yeongyu/pi-apply-patch";
       flake = false;
     };
+    remote_pi = {
+      url = "github:jacobaraujo7/remote_pi";
+      flake = false;
+    };
     millennium-material-theme = {
       url = "github:kuska1/Material-Theme";
       flake = false;
@@ -86,8 +90,14 @@
       zen-browser,
       papervim,
       noctalia-official-plugins,
+      millennium-material-theme,
+      pi-web-access,
+      pi-apply-patch,
+      sometimes,
+      drift,
+      remote_pi,
       ...
-    }@inputs:
+    }:
     let
       lib = nixpkgs.lib;
     in
@@ -98,19 +108,20 @@
             system = "x86_64-linux";
           };
         in
-        builtins.readDir ./pkgs
-        |> lib.mapAttrs' (
-          pkg: _:
-          let
-            name = lib.removeSuffix ".nix" pkg;
-          in
-          {
-            inherit name;
-            value = pkgs.callPackage ./pkgs/${pkg} (
-              if inputs |> lib.hasAttr name then { src = inputs."${name}"; } else { }
-            );
-          }
-        );
+        {
+          millennium-material-theme = pkgs.callPackage ./pkgs/millennium-material-theme.nix {
+            src = millennium-material-theme;
+          };
+          pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
+          pi-apply-patch = pkgs.callPackage ./pkgs/pi-apply-patch.nix { src = pi-apply-patch; };
+          qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
+          sometimes = pkgs.callPackage ./pkgs/sometimes.nix { src = sometimes; };
+          drift = pkgs.callPackage ./pkgs/drift.nix { src = drift; };
+          mkNoctaliaPlugin = pkgs.callPackage ./pkgs/mkNoctaliaPlugin.nix { };
+          remote_pi-extension = pkgs.callPackage ./pkgs/remote_pi-extension.nix {
+            src = "${remote_pi}/pi-extension";
+          };
+        };
       overlays.default =
         prev: final:
         let
@@ -173,6 +184,7 @@
           inherit (localPackages) qogir-cursors millennium-material-theme;
           piPlugins = {
             inherit (localPackages) pi-web-access pi-apply-patch;
+            remote_pi = localPackages.remote_pi-extension;
           };
           noctaliaPlugins = {
             wallhaven = localPackages.mkNoctaliaPlugin {

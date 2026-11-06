@@ -578,6 +578,22 @@
         "type": "github"
       }
     },
+    "remote_pi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793820638,
+        "narHash": "sha256-fl6+/pPO4ikcRTG1ABDUaWutU81n0WKgAvkMKuQME0M=",
+        "owner": "jacobaraujo7",
+        "repo": "remote_pi",
+        "rev": "8fe92dc21761591a8b4b302f6136ae861e2ba7ce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jacobaraujo7",
+        "repo": "remote_pi",
+        "type": "github"
+      }
+    },
     "render-markdown.nvim": {
       "flake": false,
       "locked": {
@@ -607,6 +623,7 @@
         "papervim": "papervim",
         "pi-apply-patch": "pi-apply-patch",
         "pi-web-access": "pi-web-access",
+        "remote_pi": "remote_pi",
         "rust-overlay": "rust-overlay",
         "sometimes": "sometimes",
         "sops-nix": "sops-nix",
