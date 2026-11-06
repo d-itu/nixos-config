@@ -299,34 +299,29 @@
             })
             {
               "browser.aboutConfig.showWarning" = false;
+              "browser.tabs.hoverPreview.enabled" = true;
+              "browser.translations.automaticallyPopup" = false;
+
               "dom.webgpu.enabled" = true;
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+
               "devtools.chrome.enabled" = true;
+              "devtools.debugger.remote-enabled" = true;
+
+              "zen.widget.linux.transparency" = true;
+              "zen.theme.content-element-separation" = 0;
+              "zen.tabs.show-new-tab-vertical" = false;
             };
       };
 
+      globalExtensions = with pkgs.firefox-addons; [
+        ublock-origin
+        github-file-icons
+        darkreader
+        simple-translate
+      ];
+
       profiles.default = {
-        settings = {
-          "browser.tabs.hoverPreview.enabled" = true;
-          "browser.translations.automaticallyPopup" = false;
-
-          "zen.widget.linux.transparency" = true;
-          "zen.theme.content-element-separation" = 0;
-          "zen.tabs.show-new-tab-vertical" = false;
-
-          "devtools.debugger.remote-enabled" = true;
-        };
-
-        extensions = {
-          packages = with pkgs.firefox-addons; [
-            ublock-origin
-            github-file-icons
-            darkreader
-            simple-translate
-          ];
-          settings = { };
-        };
-
         search.force = true;
         search.engines =
           let
