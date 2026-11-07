@@ -206,30 +206,7 @@
           };
         };
       nixosModules = {
-        default = {
-          imports = [
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            self.nixosModules.system
-            {
-              nixpkgs.overlays = [
-                apple-fonts.overlays.default
-                millennium.overlays.default
-                rust-overlay.overlays.default
-                firefox-addons.overlays.default
-                papervim.overlays.default
-                self.overlays.default
-              ];
-              home-manager.sharedModules = [
-                zen-browser.homeModules.twilight
-                spicetify-nix.homeManagerModules.spicetify
-                sops-nix.homeManagerModules.sops
-                self.homeModules.cockpit_server
-              ];
-            }
-          ];
-        };
-        system = import ./system;
+        default = ./nixos/default;
       };
       homeModules = {
         cockpit_server = ./hm/cockpit_server.nix;
@@ -240,8 +217,26 @@
           host: _:
           lib.nixosSystem {
             modules = [
+              home-manager.nixosModules.home-manager
+              sops-nix.nixosModules.sops
               self.nixosModules.default
-              { networking.hostName = host; }
+              {
+                nixpkgs.overlays = [
+                  apple-fonts.overlays.default
+                  millennium.overlays.default
+                  rust-overlay.overlays.default
+                  firefox-addons.overlays.default
+                  papervim.overlays.default
+                  self.overlays.default
+                ];
+                home-manager.sharedModules = [
+                  zen-browser.homeModules.twilight
+                  spicetify-nix.homeManagerModules.spicetify
+                  sops-nix.homeManagerModules.sops
+                  self.homeModules.cockpit_server
+                ];
+                networking.hostName = lib.mkDefault host;
+              }
               ./hosts/${host}
             ];
           }
