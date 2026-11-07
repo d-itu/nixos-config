@@ -107,21 +107,27 @@
           pkgs = import nixpkgs {
             system = "x86_64-linux";
           };
+          callPackage = pkgs.lib.callPackageWith (pkgs // packages);
+          packages = {
+            millennium-material-theme = callPackage ./pkgs/millennium-material-theme.nix {
+              src = millennium-material-theme;
+            };
+            pi-web-access = callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
+            pi-apply-patch = callPackage ./pkgs/pi-apply-patch.nix { src = pi-apply-patch; };
+            qogir-cursors = callPackage ./pkgs/qogir-cursors.nix { };
+            sometimes = callPackage ./pkgs/sometimes.nix { src = sometimes; };
+            drift = callPackage ./pkgs/drift.nix { src = drift; };
+            mkNoctaliaPlugin = callPackage ./pkgs/mkNoctaliaPlugin.nix { };
+            remote_pi-extension = callPackage ./pkgs/remote_pi-extension.nix {
+              src = "${remote_pi}/pi-extension";
+            };
+            cockpit_server = callPackage ./pkgs/cockpit_server.nix {
+              src = remote_pi;
+            };
+            anaki = callPackage ./pkgs/anaki.nix { };
+          };
         in
-        {
-          millennium-material-theme = pkgs.callPackage ./pkgs/millennium-material-theme.nix {
-            src = millennium-material-theme;
-          };
-          pi-web-access = pkgs.callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
-          pi-apply-patch = pkgs.callPackage ./pkgs/pi-apply-patch.nix { src = pi-apply-patch; };
-          qogir-cursors = pkgs.callPackage ./pkgs/qogir-cursors.nix { };
-          sometimes = pkgs.callPackage ./pkgs/sometimes.nix { src = sometimes; };
-          drift = pkgs.callPackage ./pkgs/drift.nix { src = drift; };
-          mkNoctaliaPlugin = pkgs.callPackage ./pkgs/mkNoctaliaPlugin.nix { };
-          remote_pi-extension = pkgs.callPackage ./pkgs/remote_pi-extension.nix {
-            src = "${remote_pi}/pi-extension";
-          };
-        };
+        packages;
       overlays.default =
         prev: final:
         let
@@ -181,7 +187,13 @@
           lua-format = rustPkg final.lua-format;
           blink-cmp-fuzzy = rustPkg final.blink-cmp-fuzzy;
           drift-player = localPackages.drift;
-          inherit (localPackages) qogir-cursors millennium-material-theme;
+          inherit (localPackages)
+            qogir-cursors
+            millennium-material-theme
+            ;
+          cockpit_server = localPackages.cockpit_server.override {
+            anaki = rustPkg localPackages.anaki;
+          };
           piPlugins = {
             inherit (localPackages) pi-web-access pi-apply-patch;
             remote_pi = localPackages.remote_pi-extension;
@@ -212,11 +224,15 @@
                 zen-browser.homeModules.twilight
                 spicetify-nix.homeManagerModules.spicetify
                 sops-nix.homeManagerModules.sops
+                self.homeModules.cockpit_server
               ];
             }
           ];
         };
         system = import ./system;
+      };
+      homeModules = {
+        cockpit_server = ./hm/cockpit_server.nix;
       };
       nixosConfigurations =
         builtins.readDir ./hosts
