@@ -4,7 +4,6 @@
 }:
 {
   programs.yazi = {
-    enable = true;
     plugins = with pkgs.yaziPlugins; {
       git = {
         package = git;

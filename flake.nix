@@ -100,6 +100,15 @@
     }:
     let
       lib = nixpkgs.lib;
+      mkModules =
+        dir:
+        builtins.readDir dir
+        |> lib.mapAttrs' (
+          name: type: {
+            name = (if type == "directory" then lib.id else lib.removeSuffix ".nix") name;
+            value = dir + /${name};
+          }
+        );
     in
     {
       packages.x86_64-linux =
@@ -121,9 +130,7 @@
             remote_pi-extension = callPackage ./pkgs/remote_pi-extension.nix {
               src = "${remote_pi}/pi-extension";
             };
-            cockpit_server = callPackage ./pkgs/cockpit_server.nix {
-              src = remote_pi;
-            };
+            cockpit_server = callPackage ./pkgs/cockpit_server.nix { src = remote_pi; };
             anaki = callPackage ./pkgs/anaki.nix { };
           };
         in
@@ -205,12 +212,8 @@
             };
           };
         };
-      nixosModules = {
-        default = ./nixos/default;
-      };
-      homeModules = {
-        cockpit_server = ./hm/cockpit_server.nix;
-      };
+      nixosModules = mkModules ./nixos;
+      homeModules = mkModules ./hm;
       nixosConfigurations =
         builtins.readDir ./hosts
         |> builtins.mapAttrs (
@@ -219,7 +222,6 @@
             modules = [
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
-              self.nixosModules.default
               {
                 nixpkgs.overlays = [
                   apple-fonts.overlays.default
@@ -233,12 +235,13 @@
                   zen-browser.homeModules.twilight
                   spicetify-nix.homeManagerModules.spicetify
                   sops-nix.homeManagerModules.sops
-                  self.homeModules.cockpit_server
-                ];
+                ]
+                ++ builtins.attrValues self.homeModules;
                 networking.hostName = lib.mkDefault host;
               }
               ./hosts/${host}
-            ];
+            ]
+            ++ builtins.attrValues self.nixosModules;
           }
         );
     };

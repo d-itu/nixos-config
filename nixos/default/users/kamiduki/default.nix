@@ -13,6 +13,7 @@ in
 
     home = {
       inherit username homeDirectory;
+      file.".ssh/id_ed25519.pub".source = ./id_ed25519.pub;
     };
   };
 
@@ -24,7 +25,7 @@ in
       "video"
     ];
     openssh.authorizedKeys.keys = [
-      (builtins.readFile ./home/id_ed25519.pub)
+      (builtins.readFile ./id_ed25519.pub)
     ];
     uid = 1000;
   };
@@ -32,7 +33,7 @@ in
   sops = {
     secrets = {
       "${username}/id_ed25519" = {
-        sopsFile = ./home/secrets/id_ed25519;
+        sopsFile = ./secrets/id_ed25519;
         path = "${homeDirectory}/.ssh/id_ed25519";
         format = "binary";
         owner = username;

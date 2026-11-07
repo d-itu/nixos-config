@@ -18,7 +18,6 @@ let
   plugins = with pkgs.piPlugins; [
     pi-web-access
     pi-apply-patch
-    remote_pi
   ];
 in
 {
@@ -31,7 +30,6 @@ in
     |> builtins.listToAttrs;
   programs = {
     pi-coding-agent = {
-      enable = true;
       extraPackages = with pkgs; [ wl-clipboard ];
       inherit context;
       models = {

@@ -16,7 +16,6 @@
       spawn-terminal = "${spawn-terminal-pkg}/bin/${spawn-terminal-cmd}";
     in
     {
-      enable = true;
       settings = {
         include = builtins.path {
           path = ./config.kdl;

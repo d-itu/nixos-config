@@ -98,7 +98,9 @@ in
 
   sops = {
     secrets = {
-      wallhaven = { };
+      wallhaven = {
+        sopsFile = ./secrets/secrets.yaml;
+      };
     };
     templates."noctalia/secrets.toml" = {
       file = formatToml.generate "secrets.toml" {
@@ -113,7 +115,6 @@ in
   };
 
   programs.noctalia = {
-    enable = true;
     systemd.enable = true;
     settings = {
       plugins.enabled =
