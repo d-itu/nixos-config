@@ -17,6 +17,7 @@
     ./sops
     ./ghostty
   ];
+  home.backupFileExtension = "backup";
   home.pointerCursor = {
     enable = true;
     inherit (osConfig.cursor) name package size;
