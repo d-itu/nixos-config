@@ -187,6 +187,7 @@
           rustPkg = pkg: (pkg.override { inherit rustPlatform; }).overrideAttrs rustAttrs;
         in
         {
+          lib = final.lib // home-manager.lib;
           spicetify = spicetify-nix.legacyPackages.${prev.stdenv.hostPlatform.system};
           wl-send-key = wl-send-key.packages.${prev.stdenv.hostPlatform.system}.default;
           inherit rustToolchain;

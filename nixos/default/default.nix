@@ -132,15 +132,25 @@
         size = 11;
         package = sf-pro;
       };
+      serif = {
+        name = "New York";
+        size = 11;
+        package = ny;
+      };
       mono = {
         name = "SF Mono";
         size = 11;
         package = sf-mono;
       };
-      serif = {
-        name = "New York";
-        size = 11;
-        package = ny;
+      code = {
+        name = "VictorMono Nerd Font";
+        size = 15;
+        package = nerd-fonts.victor-mono;
+      };
+      terminal = {
+        name = "Maple Mono";
+        size = 15;
+        package = maple-mono.truetype;
       };
     };
   };

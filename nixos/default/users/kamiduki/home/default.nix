@@ -52,6 +52,7 @@
     jujutsu.enable = true;
     gh.enable = true;
     kitty.enable = true;
+    ghostty.enable = true;
     zathura.enable = true;
     btop.enable = true;
     zoxide.enable = true;

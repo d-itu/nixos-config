@@ -15,6 +15,7 @@
     ./neovim
     ./zen-browser
     ./sops
+    ./ghostty
   ];
   home.pointerCursor = {
     enable = true;
@@ -23,7 +24,10 @@
     gtk.enable = true;
     x11.enable = true;
   };
-  xdg.mimeApps.enable = true;
+  xdg = {
+    mimeApps.enable = true;
+    terminal-exec.enable = true;
+  };
   gtk = {
     enable = true;
     theme = {
@@ -201,11 +205,7 @@
       };
     };
     kitty = {
-      font = {
-        package = pkgs.nerd-fonts.victor-mono;
-        name = "VictorMono Nerd Font";
-        size = 15;
-      };
+      font = osConfig.fonts.default.terminal;
       extraConfig = builtins.readFile ./kitty/kitty.conf;
     };
     zathura = {
