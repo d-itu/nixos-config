@@ -1,6 +1,8 @@
 { pkgs, ... }: {
   imports = [ ./hardware-configuration.nix ];
 
+  boot.initrd.kernelModules = [ "amdgpu" ];
+
   services = {
     printing = {
       enable = true;

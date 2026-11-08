@@ -20,8 +20,35 @@
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+      timeout = 0;
     };
     kernelPackages = pkgs.linuxPackages_latest;
+    plymouth = {
+      enable = true;
+      font =
+        with config.fonts.default.ui;
+        pkgs.runCommand "plymouth-font" {
+          nativeBuildInputs = [
+            pkgs.fontconfig
+          ];
+          XDG_DATA_DIRS = "${package}/share";
+        } "fc-match '${name}' -f %{file} > $out"
+        |> builtins.readFile;
+      theme = "snowflake";
+      themePackages = [ pkgs.snowflake-plymouth ];
+      extraConfig = ''
+        DeviceScale=1
+      '';
+    };
+
+    consoleLogLevel = 3;
+    kernelParams = [
+      "quiet"
+      "rd.udev.log_level=3"
+      "rd.systemd.show_status=auto"
+
+      "plymouth.debug=stream:/dev/kmsg"
+    ];
   };
 
   networking = {

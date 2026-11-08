@@ -45,6 +45,10 @@
         rust-overlay.follows = "rust-overlay";
       };
     };
+    snowflake-plymouth = {
+      url = "github:d-itu/flake-plymouth";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     papervim.url = "github:d-itu/papervim";
     pi-web-access = {
       url = "github:nicobailon/pi-web-access?rev=d47dc040552505e3b135d0136a0b15eaf4bdba52";
@@ -96,6 +100,7 @@
       sometimes,
       drift,
       remote_pi,
+      snowflake-plymouth,
       ...
     }:
     let
@@ -190,6 +195,7 @@
           lib = final.lib // home-manager.lib;
           spicetify = spicetify-nix.legacyPackages.${prev.stdenv.hostPlatform.system};
           wl-send-key = wl-send-key.packages.${prev.stdenv.hostPlatform.system}.default;
+          snowflake-plymouth = snowflake-plymouth.packages.${prev.stdenv.hostPlatform.system}.default;
           inherit rustToolchain;
           sometimes = rustPkg localPackages.sometimes;
           lua-format = rustPkg final.lua-format;

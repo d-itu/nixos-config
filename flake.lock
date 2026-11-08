@@ -625,6 +625,7 @@
         "pi-web-access": "pi-web-access",
         "remote_pi": "remote_pi",
         "rust-overlay": "rust-overlay",
+        "snowflake-plymouth": "snowflake-plymouth",
         "sometimes": "sometimes",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
@@ -750,6 +751,26 @@
       "original": {
         "type": "file",
         "url": "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg"
+      }
+    },
+    "snowflake-plymouth": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794308364,
+        "narHash": "sha256-/FncMIB+UQhucQKDwmDQtDiYaQ7pA0JV5rXNQJa5E3o=",
+        "owner": "d-itu",
+        "repo": "flake-plymouth",
+        "rev": "cef4dfc42436c32cc5a6289a2789633cdbad6894",
+        "type": "github"
+      },
+      "original": {
+        "owner": "d-itu",
+        "repo": "flake-plymouth",
+        "type": "github"
       }
     },
     "sometimes": {
