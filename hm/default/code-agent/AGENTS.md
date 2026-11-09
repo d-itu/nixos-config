@@ -1,8 +1,9 @@
 ## User Preferences
-- Always respond in Chinese.
+- Respond in Chinese.
 - Write code comments and documentation in English.
-- Don't copy user preferences to project `AGENTS.md`.
-- Never modify anything out of the project dir; Never install dependencies globally or system-wide.
+- Don't edit project `AGENTS.md` if not required.
+- Never modify anything out of the project directory.
+- Never install dependencies globally or system-wide.
 
 ## Language Specific
 ### Rust
@@ -23,8 +24,8 @@
 ### Python
 - Use `ruff` to format and `ruff check` `ty check` to lint.
 
-## Environment & VCS
-- Use `jj` command if project already uses `jj`.
+## Version Control
+- Use `jj` command if project directory contains `.jj`.
 - Prefer `jj` for new projects.
 - Commit messages should follow [Conventional Commits](https://www.conventionalcommits.org) specification.
 
