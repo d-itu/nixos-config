@@ -23,6 +23,7 @@
       rustToolchain
       zig
       uv
+      ty
       ruff
       drift-player
 

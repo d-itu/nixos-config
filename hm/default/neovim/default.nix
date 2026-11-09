@@ -9,7 +9,6 @@
         lua-language-server
         nixd
         tinymist
-        ty
         typescript-language-server
         vscode-json-languageserver
         vscode-html-languageserver

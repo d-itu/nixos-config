@@ -20,6 +20,9 @@
 ### Nix
 - Use `nixfmt` to format nix files.
 
+### Python
+- Use `ruff` to format and `ruff check` `ty check` to lint.
+
 ## Environment & VCS
 - Use `jj` command if project already uses `jj`.
 - Prefer `jj` for new projects.
