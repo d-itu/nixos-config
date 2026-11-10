@@ -42,7 +42,7 @@
 
             "zen.widget.linux.transparency" = true;
             "zen.theme.content-element-separation" = 0;
-            "zen.tabs.show-new-tab-vertical" = false;
+            "zen.tabs.show-newtab-vertical" = false;
           };
     };
 
