@@ -61,6 +61,7 @@ routing {
   domain(jetbrains.com) -> direct
   domain(apple.com) -> direct
   domain(saghen.dev) -> direct
+  domain(api.opentech.top) -> direct
   domain(noctalia.dev) && pname(noctalia) -> direct
 
   # china
