@@ -16,8 +16,9 @@
         |> lib.concatStringsSep "\n";
     in
     {
-      "config.dae".content = lib.mkIf config.services.dae.enable (
-        builtins.readFile ./config.dae + " node { ${nodes} } "
-      );
+      "config.dae" = lib.mkIf config.services.dae.enable {
+        content = builtins.readFile ./config.dae + " node { ${nodes} } ";
+        reloadUnits = [ "dae.service" ];
+      };
     };
 }
