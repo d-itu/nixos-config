@@ -1,6 +1,14 @@
 { pkgs, ... }:
 let
   context = ./AGENTS.md;
+  mkOpenaiModel = id: {
+    inherit id;
+    reasoning = true;
+    input = [
+      "text"
+      "image"
+    ];
+  };
   providers = {
     opentech = {
       name = "Opentech";
@@ -41,14 +49,8 @@ in
             baseUrl = base_url;
             api = "openai-responses";
             models = [
-              {
-                id = "gpt-6-astra";
-                reasoning = true;
-              }
-              {
-                id = "gpt-6-sol";
-                reasoning = true;
-              }
+              (mkOpenaiModel "gpt-6-astra")
+              (mkOpenaiModel "gpt-6-sol")
             ];
           }
         ) providers;
