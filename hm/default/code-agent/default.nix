@@ -14,10 +14,6 @@ let
       name = "Opentech";
       base_url = "https://api.opentech.top";
     };
-    deemos_sub = {
-      name = "Deemos Sub";
-      base_url = "https://sub.deemos.dev/v1";
-    };
   };
   default = {
     provider = "opentech";
