@@ -39,10 +39,6 @@
 
             "devtools.chrome.enabled" = true;
             "devtools.debugger.remote-enabled" = true;
-
-            "zen.widget.linux.transparency" = true;
-            "zen.theme.content-element-separation" = 0;
-            "zen.tabs.show-newtab-vertical" = false;
           };
     };
 
@@ -63,6 +59,11 @@
       });
 
     profiles.default = {
+      settings = {
+        "zen.widget.linux.transparency" = true;
+        "zen.theme.content-element-separation" = 0;
+        "zen.tabs.show-newtab-vertical" = false;
+      };
       extensions = {
         force = true;
         settings = with pkgs.firefox-addons; {
