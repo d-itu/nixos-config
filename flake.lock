@@ -545,22 +545,6 @@
         "type": "github"
       }
     },
-    "pi-apply-patch": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1792969411,
-        "narHash": "sha256-/oPMXVHVAYre4Cfh2JmvXCJNrpmVis0khft1ty0OhhM=",
-        "owner": "code-yeongyu",
-        "repo": "pi-apply-patch",
-        "rev": "f5894a26ee24dee8598ceb7f95d79276764efb57",
-        "type": "github"
-      },
-      "original": {
-        "owner": "code-yeongyu",
-        "repo": "pi-apply-patch",
-        "type": "github"
-      }
-    },
     "pi-web-access": {
       "flake": false,
       "locked": {
@@ -621,7 +605,6 @@
         "nixpkgs": "nixpkgs_2",
         "noctalia-official-plugins": "noctalia-official-plugins",
         "papervim": "papervim",
-        "pi-apply-patch": "pi-apply-patch",
         "pi-web-access": "pi-web-access",
         "remote_pi": "remote_pi",
         "rust-overlay": "rust-overlay",

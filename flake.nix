@@ -54,10 +54,6 @@
       url = "github:nicobailon/pi-web-access?rev=d47dc040552505e3b135d0136a0b15eaf4bdba52";
       flake = false;
     };
-    pi-apply-patch = {
-      url = "github:code-yeongyu/pi-apply-patch";
-      flake = false;
-    };
     remote_pi = {
       url = "github:jacobaraujo7/remote_pi";
       flake = false;
@@ -96,7 +92,6 @@
       noctalia-official-plugins,
       millennium-material-theme,
       pi-web-access,
-      pi-apply-patch,
       sometimes,
       drift,
       remote_pi,
@@ -127,7 +122,7 @@
               src = millennium-material-theme;
             };
             pi-web-access = callPackage ./pkgs/pi-web-access.nix { src = pi-web-access; };
-            pi-apply-patch = callPackage ./pkgs/pi-apply-patch.nix { src = pi-apply-patch; };
+            pi-apply-patch = callPackage ./pkgs/pi-apply-patch.nix { };
             qogir-cursors = callPackage ./pkgs/qogir-cursors.nix { };
             sometimes = callPackage ./pkgs/sometimes.nix { src = sometimes; };
             drift = callPackage ./pkgs/drift.nix { src = drift; };
